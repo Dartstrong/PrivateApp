@@ -81,10 +81,20 @@ namespace PrivateApp
             byte[] passwordHash = MD5.HashData(BitConverter.GetBytes(password));
             if (!new FileInfo(_fileName).Exists)
             {
-                using (BinaryWriter writer = new BinaryWriter(File.Open(_fileName, FileMode.OpenOrCreate)))
+                if (_session != null)
                 {
-                    writer.Write(MD5.HashData(passwordHash));
+                    using (BinaryWriter writer = new BinaryWriter(File.Open(_fileName, FileMode.OpenOrCreate)))
+                    {
+                        writer.Write(MD5.HashData(passwordHash));
+                        await Navigation.PushModalAsync(new LoginPage(_session));
+                    }
                 }
+                else
+                {
+                    ClearPassword();
+                    await DisplayAlert("Уведомление", "Проверьте подключение к интернету и повторите попытку", "ОK");
+                }
+
             }
             else
             {
@@ -100,28 +110,27 @@ namespace PrivateApp
                     {
                         if (_session == null)
                         {
-                            _password.Clear();
-                            passwordField1.TextColor = Colors.Grey;
-                            passwordField2.TextColor = Colors.Grey;
-                            passwordField3.TextColor = Colors.Grey;
-                            passwordField4.TextColor = Colors.Grey;
-                            passwordField5.TextColor = Colors.Grey;
+                            ClearPassword();
                             await DisplayAlert("Уведомление", "Проверьте подключение к интернету и повторите попытку", "ОK");
                         }
                         else await Navigation.PushModalAsync(new LoginPage(_session));
                     }
                     else
                     {
-                        _password.Clear();
                         mainLabel.Text = "Неверный пароль, повторите попытку";
-                        passwordField1.TextColor = Colors.Grey;
-                        passwordField2.TextColor = Colors.Grey;
-                        passwordField3.TextColor = Colors.Grey;
-                        passwordField4.TextColor = Colors.Grey;
-                        passwordField5.TextColor = Colors.Grey; 
-                     }      
+                        ClearPassword();
+                    }      
                 }
             }
+        }
+        private void ClearPassword()
+        {
+            _password.Clear();
+            passwordField1.TextColor = Colors.Grey;
+            passwordField2.TextColor = Colors.Grey;
+            passwordField3.TextColor = Colors.Grey;
+            passwordField4.TextColor = Colors.Grey;
+            passwordField5.TextColor = Colors.Grey;
         }
     }
 }

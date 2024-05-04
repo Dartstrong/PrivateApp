@@ -4,10 +4,31 @@
              x:Class="PrivateApp.LoginPage"
              Title="LoginPage"
              BackgroundColor="#282828">
-    <ScrollView>
-        <VerticalStackLayout>
-            <Image Source="main_inscription.png"/>
-            <Button Clicked="EntryButtonClicked"></Button>
+    <VerticalStackLayout  VerticalOptions="Center" Margin="50" Spacing="25">
+        <VerticalStackLayout Spacing="15">
+            <Image Source="main_inscription.png" Aspect="AspectFill"/>
+            <Entry x:Name="loginField" TextColor="#7AF4BA" Placeholder="Логин" HorizontalTextAlignment="Center"/>
+            <Entry x:Name="passwordField" TextColor="#7AF4BA" IsPassword="true" Placeholder="Пароль"  HorizontalTextAlignment="Center"/>
+            <StackLayout Orientation="Horizontal">
+                <Label Text=" Запомнить меня" TextColor="Grey" FontSize="15" VerticalOptions="Center"/>
+                <Switch x:Name="rememberMe" IsToggled="False" OnColor="#7AF4BA" ThumbColor="Grey"/>
+            </StackLayout>
+            <Button HeightRequest="45" Text="Войти" TextColor="#282828" FontSize="20" FontAttributes="Bold">
+                <Button.Background>
+                    <LinearGradientBrush StartPoint="1,0.5" EndPoint="0,0.5">
+                        <GradientStop Color="#7AF4BA" Offset="0" />
+                        <GradientStop Color="#60E5DD" Offset="1" />
+                    </LinearGradientBrush>
+                </Button.Background>
+            </Button>
+            <Button HeightRequest="45" Text="Регистрация" TextColor="#282828" FontSize="20" FontAttributes="Bold" >
+                <Button.Background>
+                    <LinearGradientBrush StartPoint="1,0.5" EndPoint="0,0.5">
+                        <GradientStop Color="#7AF4BA" Offset="0" />
+                        <GradientStop Color="#60E5DD" Offset="1" />
+                    </LinearGradientBrush>
+                </Button.Background>
+            </Button>
         </VerticalStackLayout>
-    </ScrollView>
+    </VerticalStackLayout>
 </ContentPage>
