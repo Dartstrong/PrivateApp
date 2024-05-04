@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="PrivateApp.AppLoginPage"
+             Title="AppLoginPage"
+             BackgroundColor="#282828">
+    <VerticalStackLayout VerticalOptions="Center" Margin="50">
+        <VerticalStackLayout Spacing="25">
+            <VerticalStackLayout Spacing="15">
+                <Image Source="main_inscription.png" Aspect="AspectFill"/>
+                <HorizontalStackLayout HorizontalOptions="Center">
+                    <Label x:Name="mainLabel" Text="Введите пароль" TextColor="#7AF4BA"/>
+                </HorizontalStackLayout>
+                <HorizontalStackLayout HorizontalOptions="Center">
+                    <Label x:Name="passwordField1" TextColor="Grey" Text="*" FontSize="25" CharacterSpacing="10"/>
+                    <Label x:Name="passwordField2" TextColor="Grey" Text="*" FontSize="25" CharacterSpacing="10"/>
+                    <Label x:Name="passwordField3" TextColor="Grey" Text="*" FontSize="25" CharacterSpacing="10"/>
+                    <Label x:Name="passwordField4" TextColor="Grey" Text="*" FontSize="25" CharacterSpacing="10"/>
+                    <Label x:Name="passwordField5" TextColor="Grey" Text="*" FontSize="25" CharacterSpacing="10"/>
+                </HorizontalStackLayout>
+            </VerticalStackLayout>
+            <Grid RowSpacing="10">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="*"/>
+                </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+                <Button Grid.Column="0" Grid.Row="0" WidthRequest="85" HeightRequest="75" Text="1" TextColor="#282828" FontSize="30" FontAttributes="Bold" Clicked="ButtonClicked" >
+                    <Button.Background>
+                        <LinearGradientBrush StartPoint="1,0.5" EndPoint="0,0.5">
+                            <GradientStop Color="#7AF4BA" Offset="0" />
+                            <GradientStop Color="#60E5DD" Offset="1" />
+                        </LinearGradientBrush>
+                    </Button.Background>
+                </Button>
+                <Button Grid.Column="1" Grid.Row="0" WidthRequest="85" HeightRequest="75" Text="2" TextColor="#282828" FontSize="30" FontAttributes="Bold" Clicked="ButtonClicked">
+                    <Button.Background>
+                        <LinearGradientBrush StartPoint="1,0.5" EndPoint="0,0.5">
+                            <GradientStop Color="#7AF4BA" Offset="0" />
+                            <GradientStop Color="#60E5DD" Offset="1" />
+                        </LinearGradientBrush>
+                    </Button.Background>
+                </Button>
+                <Button Grid.Column="2" Grid.Row="0" WidthRequest="85" HeightRequest="75" Text="3" TextColor="#282828" FontSize="30" FontAttributes="Bold" Clicked="ButtonClicked">
+                    <Button.Background>
+                        <LinearGradientBrush StartPoint="1,0.5" EndPoint="0,0.5">
+                            <GradientStop Color="#7AF4BA" Offset="0" />
+                            <GradientStop Color="#60E5DD" Offset="1" />
+                        </LinearGradientBrush>
+                    </Button.Background>
+                </Button>
+                <Button Grid.Column="0" Grid.Row="1" WidthRequest="85" HeightRequest="75" Text="4" TextColor="#282828" FontSize="30" FontAttributes="Bold" Clicked="ButtonClicked">
+                    <Button.Background>
+                        <LinearGradientBrush StartPoint="1,0.5" EndPoint="0,0.5">
+                            <GradientStop Color="#7AF4BA" Offset="0" />
+                            <GradientStop Color="#60E5DD" Offset="1" />
+                        </LinearGradientBrush>
+                    </Button.Background>
+                </Button>
+                <Button Grid.Column="1" Grid.Row="1" WidthRequest="85" HeightRequest="75" Text="5" TextColor="#282828" FontSize="30" FontAttributes="Bold" Clicked="ButtonClicked">
+                    <Button.Background>
+                        <LinearGradientBrush StartPoint="1,0.5" EndPoint="0,0.5">
+                            <GradientStop Color="#7AF4BA" Offset="0" />
+                            <GradientStop Color="#60E5DD" Offset="1" />
+                        </LinearGradientBrush>
+                    </Button.Background>
+                </Button>
+                <Button Grid.Column="2" Grid.Row="1" WidthRequest="85" HeightRequest="75" Text="6" TextColor="#282828" FontSize="30" FontAttributes="Bold" Clicked="ButtonClicked">
+                    <Button.Background>
+                        <LinearGradientBrush StartPoint="1,0.5" EndPoint="0,0.5">
+                            <GradientStop Color="#7AF4BA" Offset="0" />
+                            <GradientStop Color="#60E5DD" Offset="1" />
+                        </LinearGradientBrush>
+                    </Button.Background>
+                </Button>
+                <Button Grid.Column="0" Grid.Row="2" WidthRequest="85" HeightRequest="75" Text="7" TextColor="#282828" FontSize="30" FontAttributes="Bold" Clicked="ButtonClicked">
+                    <Button.Background>
+                        <LinearGradientBrush StartPoint="1,0.5" EndPoint="0,0.5">
+                            <GradientStop Color="#7AF4BA" Offset="0" />
+                            <GradientStop Color="#60E5DD" Offset="1" />
+                        </LinearGradientBrush>
+                    </Button.Background>
+                </Button>
+                <Button Grid.Column="1" Grid.Row="2" WidthRequest="85" HeightRequest="75" Text="8" TextColor="#282828" FontSize="30" FontAttributes="Bold" Clicked="ButtonClicked">
+                    <Button.Background>
+                        <LinearGradientBrush StartPoint="1,0.5" EndPoint="0,0.5">
+                            <GradientStop Color="#7AF4BA" Offset="0" />
+                            <GradientStop Color="#60E5DD" Offset="1" />
+                        </LinearGradientBrush>
+                    </Button.Background>
+                </Button>
+                <Button Grid.Column="2" Grid.Row="2" WidthRequest="85" HeightRequest="75" Text="9" TextColor="#282828" FontSize="30" FontAttributes="Bold" Clicked="ButtonClicked">
+                    <Button.Background>
+                        <LinearGradientBrush StartPoint="1,0.5" EndPoint="0,0.5">
+                            <GradientStop Color="#7AF4BA" Offset="0" />
+                            <GradientStop Color="#60E5DD" Offset="1" />
+                        </LinearGradientBrush>
+                    </Button.Background>
+                </Button>
+                <Button Grid.Column="1" Grid.Row="3" WidthRequest="85" HeightRequest="75" Text="0" TextColor="#282828" FontSize="30" FontAttributes="Bold" Clicked="ButtonClicked">
+                    <Button.Background>
+                        <LinearGradientBrush StartPoint="1,0.5" EndPoint="0,0.5">
+                            <GradientStop Color="#7AF4BA" Offset="0" />
+                            <GradientStop Color="#60E5DD" Offset="1" />
+                        </LinearGradientBrush>
+                    </Button.Background>
+                </Button>
+                <ImageButton Grid.Column="2" Grid.Row="3" WidthRequest="85" HeightRequest="75"  Source="erase_button.png" BackgroundColor="#282828" Clicked="ErraseButtonClicked"/>
+            </Grid>
+        </VerticalStackLayout>
+    </VerticalStackLayout>
+</ContentPage>

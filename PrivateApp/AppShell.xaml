@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<Shell
+    x:Class="PrivateApp.AppShell"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:local="clr-namespace:PrivateApp"
+    Shell.FlyoutBehavior="Flyout"
+    Shell.NavBarIsVisible="False"
+    Title="PrivateApp">
+    
+    <FlyoutItem Title="MainPage">
+        <Tab>
+            <ShellContent  ContentTemplate="{DataTemplate local:MainPage}"/>
+        </Tab>
+    </FlyoutItem>
+   
+    <FlyoutItem Title="LoginPage">
+        <Tab>
+            <ShellContent ContentTemplate="{DataTemplate local:LoginPage}" />
+        </Tab>
+    </FlyoutItem>
+</Shell>
