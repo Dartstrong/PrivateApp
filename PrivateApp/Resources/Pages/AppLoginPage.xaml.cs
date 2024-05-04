@@ -37,6 +37,15 @@ namespace PrivateApp
                 WriteIndented = true
             };
         }
+        private async void StartSession(RSAPublicKey publicKey)
+        {
+            string json = JsonSerializer.Serialize<RSAPublicKey>(publicKey, _serializerOptions);
+            string apiAddress = DeviceInfo.Platform == DevicePlatform.Android ? "https://10.0.2.2:5001/api/session/" : "https://localhost:5001/api/session/";
+            StringContent sentContent = new StringContent(json, Encoding.UTF8, "application/json");
+            HttpResponseMessage response = await _client.PostAsync(apiAddress, sentContent);
+            string receivedСontent = await response.Content.ReadAsStringAsync();
+            _session = JsonSerializer.Deserialize<Session>(receivedСontent, _serializerOptions);
+        }
         private void ButtonClicked(object sender, System.EventArgs e)
         {
             Button button = (Button)sender;
@@ -62,7 +71,7 @@ namespace PrivateApp
                 case 4: passwordField5.TextColor = Colors.Grey; break;
             }
         }
-        private void PasswordCheck()
+        private async void PasswordCheck()
         {
             int password = 0;
             foreach (var a in _password)
@@ -87,7 +96,20 @@ namespace PrivateApp
                     {
                         if (savedHash[i] != passwordHash[i]) error = true;
                     }
-                    if(!error) { mainLabel.Text = "Пароль верен"; }
+                    if(!error) 
+                    {
+                        if (_session == null)
+                        {
+                            _password.Clear();
+                            passwordField1.TextColor = Colors.Grey;
+                            passwordField2.TextColor = Colors.Grey;
+                            passwordField3.TextColor = Colors.Grey;
+                            passwordField4.TextColor = Colors.Grey;
+                            passwordField5.TextColor = Colors.Grey;
+                            await DisplayAlert("Уведомление", "Проверьте подключение к интернету и повторите попытку", "ОK");
+                        }
+                        else await Navigation.PushModalAsync(new LoginPage(_session));
+                    }
                     else
                     {
                         _password.Clear();
@@ -100,16 +122,6 @@ namespace PrivateApp
                      }      
                 }
             }
-        }
-
-        async void StartSession(RSAPublicKey publicKey)
-        {
-            string json = JsonSerializer.Serialize<RSAPublicKey>(publicKey, _serializerOptions);
-            string apiAddress = DeviceInfo.Platform == DevicePlatform.Android ? "https://10.0.2.2:5001/api/session/" : "https://localhost:5001/api/session/";
-            StringContent sentContent = new StringContent(json, Encoding.UTF8, "application/json");
-            HttpResponseMessage response = await _client.PostAsync(apiAddress, sentContent);
-            string receivedСontent = await response.Content.ReadAsStringAsync();
-            _session = JsonSerializer.Deserialize<Session>(receivedСontent, _serializerOptions);
         }
     }
 }

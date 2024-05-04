@@ -10,7 +10,7 @@ namespace PrivateApp
         JsonSerializerOptions _serializerOptions;
         RSAPublicKey _publicKey;
         Session _session;
-		public LoginPage()
+		public LoginPage(Session session)
 		{
 			InitializeComponent();
             RSA rsa = RSA.Create();
