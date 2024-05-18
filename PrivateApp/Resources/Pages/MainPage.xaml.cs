@@ -1,10 +1,11 @@
-﻿namespace PrivateApp
+﻿using PrivateApp.Resources.Entity;
+namespace PrivateApp
 {
     public partial class MainPage : ContentPage
     {
         int count = 0;
 
-        public MainPage()
+        public MainPage(int sessionId, byte[] sessionKey, byte[] sessionInitVector, AuthorizationData user)
         {
             InitializeComponent();
         }

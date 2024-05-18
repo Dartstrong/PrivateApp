@@ -14,5 +14,4 @@ namespace PrivateApp
             MainPage = new NavigationPage(new AppLoginPage());
         }
     }
-
 }
