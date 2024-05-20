@@ -22,6 +22,7 @@ namespace PrivateApp
         private string _deviceInfoFile = Path.Combine(FileSystem.Current.AppDataDirectory, "DeviceInfo.dat");
         private string _loginFile = Path.Combine(FileSystem.Current.AppDataDirectory, "LoginInfo.dat");
         private string _passwordFile = Path.Combine(FileSystem.Current.AppDataDirectory, "PasswordInfo.dat");
+        private string _deviceId;
         public LoginPage(int sessionId, byte[] sessionKey, byte[] sessionInitVector)
         {
             InitializeComponent();
@@ -32,8 +33,12 @@ namespace PrivateApp
             _crypter = new Crypter();
             _converter = new Converter();
             _user = new AuthorizationData();
-            DeviceIdCheck();
+            NavigationPage.SetHasNavigationBar(this, false);
             UserInfoStorage();
+        }
+        protected override bool OnBackButtonPressed()
+        {
+            return true;
         }
         private void CreateRestService()
         {
@@ -44,7 +49,7 @@ namespace PrivateApp
                 WriteIndented = true
             };
         }
-        private void UserInfoStorage()
+        private async void UserInfoStorage()
         {
             if ((new FileInfo(_loginFile).Exists)&&(new FileInfo(_passwordFile).Exists))
             {
@@ -59,9 +64,12 @@ namespace PrivateApp
                     reader.Close();
                 }
                 rememberMe.IsToggled = true;
+                await DeviceIdCheck();
+                EntryButtonClicked(null, null);
             }
+            else await DeviceIdCheck();
         }
-        private async void DeviceIdCheck()
+        private async Task DeviceIdCheck()
         {
             if (!new FileInfo(_deviceInfoFile).Exists)
             {
@@ -74,7 +82,8 @@ namespace PrivateApp
                 }
                 using (BinaryReader reader = new BinaryReader(File.Open(_deviceInfoFile, FileMode.OpenOrCreate)))
                 {
-                    _user.DeviceIdStr = _crypter.Encrypt(reader.ReadInt16().ToString(), _sessionKey, _sessionInitVector);
+                    _deviceId = reader.ReadInt16().ToString();
+                    _user.DeviceIdStr = _crypter.Encrypt(_deviceId, _sessionKey, _sessionInitVector);
                     reader.Close();
                 }
             }
@@ -82,7 +91,8 @@ namespace PrivateApp
             {
                 using (BinaryReader reader = new BinaryReader(File.Open(_deviceInfoFile, FileMode.OpenOrCreate)))
                 {
-                    _user.DeviceIdStr = _crypter.Encrypt(reader.ReadInt16().ToString(), _sessionKey, _sessionInitVector);
+                    _deviceId = reader.ReadInt16().ToString();
+                    _user.DeviceIdStr = _crypter.Encrypt(_deviceId, _sessionKey, _sessionInitVector);
                     reader.Close();
                 }
             }
@@ -95,7 +105,7 @@ namespace PrivateApp
             string receivedСontent = await response.Content.ReadAsStringAsync();
             return JsonSerializer.Deserialize<NewDeviceID>(receivedСontent, _serializerOptions);
         }
-        private async void EntryButtonClicked(object sender, System.EventArgs e)
+        private async void EntryButtonClicked(object? sender, System.EventArgs? e)
         {
             if(loginField.Text == null) 
             {
@@ -132,7 +142,7 @@ namespace PrivateApp
                         if (new FileInfo(_loginFile).Exists) File.Delete(_loginFile);
                         if (new FileInfo(_passwordFile).Exists) File.Delete(_passwordFile);
                     }
-                    await Navigation.PushModalAsync(new MainPage(_sessionId, _sessionKey, _sessionInitVector, _user));
+                    await Navigation.PushAsync(new MainPage(_sessionId, _sessionKey, _sessionInitVector, _user, loginField.Text, _deviceId));
                 }
                 else await DisplayAlert("Уведомление", "Проверьте подключение к интернету и повторите попытку", "ОK");
             }
@@ -152,7 +162,7 @@ namespace PrivateApp
         private async void RegistrationButtonClicked(object sender, System.EventArgs e)
         {
             if(_user.DeviceIdStr == null) await DisplayAlert("Уведомление", "Проверьте подключение к интернету и повторите попытку", "ОK");
-            else await Navigation.PushModalAsync(new RegistrationPage(_sessionId, _sessionKey, _sessionInitVector));
+            else await Navigation.PushAsync(new RegistrationPage(_sessionId, _sessionKey, _sessionInitVector));
         }
     }
 }

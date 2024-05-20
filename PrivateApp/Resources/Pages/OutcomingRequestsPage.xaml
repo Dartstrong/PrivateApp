@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="PrivateApp.OutcomingRequestsPage"
+             Title="OutcomingRequestsPage"
+             NavigationPage.HasNavigationBar="False"
+             BackgroundColor="#282828">
+    <Grid>
+        <StackLayout>
+            <StackLayout Orientation="Horizontal">
+                <Button ImageSource="back_button.png" BackgroundColor="#282828" WidthRequest="50" Clicked="BackButtonClicked"/>
+                <Image  HorizontalOptions="Start" VerticalOptions="Center" Source="out_requests_inscription.png" Aspect="AspectFit"  HeightRequest="50"/>
+            </StackLayout>
+            <ScrollView>
+
+            </ScrollView>
+        </StackLayout>
+        <Button ImageSource="plus_button.png" BackgroundColor="#282828" WidthRequest="100" HeightRequest="100" Clicked="PlusButtonClicked" VerticalOptions="End" HorizontalOptions="End"/>
+    </Grid>
+
+</ContentPage>

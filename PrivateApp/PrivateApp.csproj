@@ -57,8 +57,13 @@
 
 	<ItemGroup>
 	  <None Remove="Platforms\Android\Resources\xml\network_security_config.xml" />
+	  <None Remove="Resources\Images\back_button.png" />
 	  <None Remove="Resources\Images\erase_button.png" />
+	  <None Remove="Resources\Images\flyout_button.png" />
 	  <None Remove="Resources\Images\main_inscription.png" />
+	  <None Remove="Resources\Images\out_requests_inscription.png" />
+	  <None Remove="Resources\Images\plus_button.png" />
+	  <None Remove="Resources\Images\settings_inscription.png" />
 	</ItemGroup>
 
 	<ItemGroup>
@@ -71,10 +76,22 @@
 	  <MauiXaml Update="Resources\Pages\AppLoginPage.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
+	  <MauiXaml Update="Resources\Pages\DialoguePage.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
+	  <MauiXaml Update="Resources\Pages\HelpPage.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
 	  <MauiXaml Update="Resources\Pages\LoginPage.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
+	  <MauiXaml Update="Resources\Pages\OutcomingRequestsPage.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
 	  <MauiXaml Update="Resources\Pages\RegistrationPage.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
+	  <MauiXaml Update="Resources\Pages\SettingsPage.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
 	</ItemGroup>

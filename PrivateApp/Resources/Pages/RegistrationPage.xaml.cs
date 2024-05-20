@@ -17,6 +17,7 @@ namespace PrivateApp
         private byte[] _sessionKey;
         private byte[] _sessionInitVector;
         private string _fileName = Path.Combine(FileSystem.Current.AppDataDirectory, "DeviceInfo.dat");
+        private string _deviceId;
         public RegistrationPage(int sessionId, byte[] sessionKey, byte[] sessionInitVector)
 		{
 			InitializeComponent();
@@ -51,7 +52,8 @@ namespace PrivateApp
                 }
                 using (BinaryReader reader = new BinaryReader(File.Open(_fileName, FileMode.OpenOrCreate)))
                 {
-                    _user.DeviceIdStr = _crypter.Encrypt(reader.ReadInt16().ToString(), _sessionKey, _sessionInitVector);
+                    _deviceId = reader.ReadInt16().ToString();
+                    _user.DeviceIdStr = _crypter.Encrypt(_deviceId, _sessionKey, _sessionInitVector);
                     reader.Close();
                 }
             }
@@ -59,7 +61,8 @@ namespace PrivateApp
             {
                 using (BinaryReader reader = new BinaryReader(File.Open(_fileName, FileMode.OpenOrCreate)))
                 {
-                    _user.DeviceIdStr = _crypter.Encrypt(reader.ReadInt16().ToString(), _sessionKey, _sessionInitVector);
+                    _deviceId = reader.ReadInt16().ToString();
+                    _user.DeviceIdStr = _crypter.Encrypt(_deviceId, _sessionKey, _sessionInitVector);
                     reader.Close();
                 }
             }
@@ -90,7 +93,7 @@ namespace PrivateApp
             {
                 int result = await RegistarationAttempt();
                 if (result == 409) await DisplayAlert("Уведомление", "Данный пользователь уже зарегистрирован", "ОK");
-                else if (result == 200) await Navigation.PushModalAsync(new MainPage(_sessionId, _sessionKey, _sessionInitVector, _user));
+                else if (result == 200) await Navigation.PushAsync(new MainPage(_sessionId, _sessionKey, _sessionInitVector, _user, loginField.Text, _deviceId));
                 else await DisplayAlert("Уведомление", "Проверьте подключение к интернету и повторите попытку", "ОK");
             }
         }
@@ -109,7 +112,7 @@ namespace PrivateApp
         private async void LoginPageButtonClicked(object sender, System.EventArgs e)
         {
             if (_user.DeviceIdStr == null) await DisplayAlert("Уведомление", "Проверьте подключение к интернету и повторите попытку", "ОK");
-            else await Navigation.PushModalAsync(new LoginPage(_sessionId, _sessionKey, _sessionInitVector));
+            else await Navigation.PushAsync(new LoginPage(_sessionId, _sessionKey, _sessionInitVector));
         }
     }
 }

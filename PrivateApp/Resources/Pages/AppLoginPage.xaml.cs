@@ -91,7 +91,7 @@ namespace PrivateApp
                         writer.Close();
                         Crypter crypter = new();
                         Converter converter = new();
-                        await Navigation.PushModalAsync(new LoginPage(_session.Id, converter.StrToIntArrayToByteArray(_session.SymmetricKey), converter.StrToIntArrayToByteArray(_session.InitVector)));
+                        await Navigation.PushAsync(new LoginPage(_session.Id, crypter.Decrypt(converter.StrToIntArrayToByteArray(_session.SymmetricKey), privateKey), crypter.Decrypt(converter.StrToIntArrayToByteArray(_session.InitVector), privateKey)), false);
                     }
                 }
                 else
@@ -122,7 +122,7 @@ namespace PrivateApp
                         {
                             Crypter crypter = new();
                             Converter converter = new();
-                            await Navigation.PushModalAsync(new LoginPage(_session.Id, crypter.Decrypt(converter.StrToIntArrayToByteArray(_session.SymmetricKey), privateKey), crypter.Decrypt(converter.StrToIntArrayToByteArray(_session.InitVector), privateKey)));
+                            await Navigation.PushAsync(new LoginPage(_session.Id, crypter.Decrypt(converter.StrToIntArrayToByteArray(_session.SymmetricKey), privateKey), crypter.Decrypt(converter.StrToIntArrayToByteArray(_session.InitVector), privateKey)), false);
                         }
                         else
                         {
