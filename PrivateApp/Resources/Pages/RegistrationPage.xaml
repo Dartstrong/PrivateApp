@@ -3,7 +3,8 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="PrivateApp.RegistrationPage"
              Title="RegistrationPage"
-             BackgroundColor="#282828">
+             BackgroundColor="#282828"
+             NavigationPage.HasNavigationBar="False">
     <VerticalStackLayout  VerticalOptions="Center" Margin="50" Spacing="25">
         <VerticalStackLayout Spacing="15">
             <Image Source="main_inscription.png" Aspect="AspectFill"/>

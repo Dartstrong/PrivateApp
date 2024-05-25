@@ -1,4 +1,4 @@
-using PrivateApp.Resources.Entity;
+using PrivateApp.Resources.Entities;
 using PrivateApp.Resources.Models;
 using PrivateApp.Resources.HelperClasses;
 using System.Security.Cryptography;
@@ -20,7 +20,7 @@ namespace PrivateApp
 			InitializeComponent();
             NavigationPage.SetHasNavigationBar(this, false);
             RSA rsa = RSA.Create();
-            RSAPublicKey _publicKey = new RSAPublicKey(rsa.ExportParameters(false));
+            _publicKey = new RSAPublicKey(rsa.ExportParameters(false));
             _privateKey = rsa.ExportParameters(true);
             CreateRestService();
             StartSession(_publicKey); 

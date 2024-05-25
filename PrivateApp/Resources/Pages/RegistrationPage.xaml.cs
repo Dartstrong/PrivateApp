@@ -1,5 +1,5 @@
 using PrivateApp.Resources.HelperClasses;
-using PrivateApp.Resources.Entity;
+using PrivateApp.Resources.Entities;
 using System.Text.Json;
 using System.Security.Cryptography;
 using System.Text;
@@ -41,30 +41,19 @@ namespace PrivateApp
         }
         private async void DeviceIdCheck()
         {
-            if (!new FileInfo(_fileName).Exists)
+            string deviceId = await SecureStorage.Default.GetAsync("deviceId");
+            if (deviceId == null)
             {
                 _crypter = new();
                 _newDeviceId = await GetDeviceID();
-                using (BinaryWriter writer = new BinaryWriter(File.Open(_fileName, FileMode.OpenOrCreate)))
-                {
-                    writer.Write(BitConverter.GetBytes(_crypter.Decrypt(_newDeviceId, _sessionKey, _sessionInitVector)));
-                    writer.Close();
-                }
-                using (BinaryReader reader = new BinaryReader(File.Open(_fileName, FileMode.OpenOrCreate)))
-                {
-                    _deviceId = reader.ReadInt16().ToString();
-                    _user.DeviceIdStr = _crypter.Encrypt(_deviceId, _sessionKey, _sessionInitVector);
-                    reader.Close();
-                }
+                await SecureStorage.Default.SetAsync("deviceId", _crypter.Decrypt(_newDeviceId, _sessionKey, _sessionInitVector).ToString());
+                _deviceId = await SecureStorage.Default.GetAsync("deviceId");
+                _user.DeviceIdStr = _crypter.Encrypt(_deviceId, _sessionKey, _sessionInitVector);
             }
             else
             {
-                using (BinaryReader reader = new BinaryReader(File.Open(_fileName, FileMode.OpenOrCreate)))
-                {
-                    _deviceId = reader.ReadInt16().ToString();
-                    _user.DeviceIdStr = _crypter.Encrypt(_deviceId, _sessionKey, _sessionInitVector);
-                    reader.Close();
-                }
+                _deviceId = await SecureStorage.Default.GetAsync("deviceId");
+                _user.DeviceIdStr = _crypter.Encrypt(_deviceId, _sessionKey, _sessionInitVector);
             }
         }
         private async Task<NewDeviceID> GetDeviceID()
@@ -93,7 +82,11 @@ namespace PrivateApp
             {
                 int result = await RegistarationAttempt();
                 if (result == 409) await DisplayAlert("Уведомление", "Данный пользователь уже зарегистрирован", "ОK");
-                else if (result == 200) await Navigation.PushAsync(new MainPage(_sessionId, _sessionKey, _sessionInitVector, _user, loginField.Text, _deviceId));
+                else if (result == 200)
+                {
+                    await Navigation.PushAsync(new MainPage(_sessionId, _sessionKey, _sessionInitVector, _user, loginField.Text, _deviceId));
+                    Navigation.RemovePage(this);
+                }
                 else await DisplayAlert("Уведомление", "Проверьте подключение к интернету и повторите попытку", "ОK");
             }
         }
@@ -112,7 +105,8 @@ namespace PrivateApp
         private async void LoginPageButtonClicked(object sender, System.EventArgs e)
         {
             if (_user.DeviceIdStr == null) await DisplayAlert("Уведомление", "Проверьте подключение к интернету и повторите попытку", "ОK");
-            else await Navigation.PushAsync(new LoginPage(_sessionId, _sessionKey, _sessionInitVector));
+            else Navigation.RemovePage(this);
+            
         }
     }
 }

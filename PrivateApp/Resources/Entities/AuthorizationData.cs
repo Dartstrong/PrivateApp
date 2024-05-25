@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace PrivateApp.Resources.Entity
+namespace PrivateApp.Resources.Entities
 {
     public class AuthorizationData
     {

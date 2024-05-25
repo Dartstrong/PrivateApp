@@ -1,6 +1,6 @@
 ﻿using System.Security.Cryptography;
 
-namespace PrivateApp.Resources.Entity
+namespace PrivateApp.Resources.Entities
 {
     public class RSAPublicKey
     {

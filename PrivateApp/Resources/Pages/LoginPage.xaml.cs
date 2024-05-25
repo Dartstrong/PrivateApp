@@ -1,5 +1,5 @@
 using Microsoft.Maui.Platform;
-using PrivateApp.Resources.Entity;
+using PrivateApp.Resources.Entities;
 using PrivateApp.Resources.Models;
 using System.Security.Cryptography;
 using System.Text;
@@ -51,18 +51,12 @@ namespace PrivateApp
         }
         private async void UserInfoStorage()
         {
-            if ((new FileInfo(_loginFile).Exists)&&(new FileInfo(_passwordFile).Exists))
+            string login = await SecureStorage.Default.GetAsync("login");
+            string password = await SecureStorage.Default.GetAsync("password");
+            if ((login!=null) &&(password!=null))
             {
-                using (BinaryReader reader = new BinaryReader(File.Open(_loginFile, FileMode.OpenOrCreate), Encoding.UTF8, false))
-                {
-                    loginField.Text = reader.ReadString();
-                    reader.Close();
-                }
-                using (BinaryReader reader = new BinaryReader(File.Open(_passwordFile, FileMode.OpenOrCreate), Encoding.UTF8, false))
-                {
-                    passwordField.Text = reader.ReadString();
-                    reader.Close();
-                }
+                loginField.Text = login;
+                passwordField.Text = password;
                 rememberMe.IsToggled = true;
                 await DeviceIdCheck();
                 EntryButtonClicked(null, null);
@@ -71,30 +65,19 @@ namespace PrivateApp
         }
         private async Task DeviceIdCheck()
         {
-            if (!new FileInfo(_deviceInfoFile).Exists)
+            string deviceId = await SecureStorage.Default.GetAsync("deviceId");
+            if (deviceId==null)
             {
                 _crypter = new();
                 _newDeviceId =  await GetDeviceID();
-                using (BinaryWriter writer = new BinaryWriter(File.Open(_deviceInfoFile, FileMode.OpenOrCreate)))
-                {
-                    writer.Write(BitConverter.GetBytes(_crypter.Decrypt(_newDeviceId, _sessionKey, _sessionInitVector)));
-                    writer.Close();
-                }
-                using (BinaryReader reader = new BinaryReader(File.Open(_deviceInfoFile, FileMode.OpenOrCreate)))
-                {
-                    _deviceId = reader.ReadInt16().ToString();
-                    _user.DeviceIdStr = _crypter.Encrypt(_deviceId, _sessionKey, _sessionInitVector);
-                    reader.Close();
-                }
+                await SecureStorage.Default.SetAsync("deviceId", _crypter.Decrypt(_newDeviceId, _sessionKey, _sessionInitVector).ToString());
+                _deviceId = await SecureStorage.Default.GetAsync("deviceId");
+                _user.DeviceIdStr = _crypter.Encrypt(_deviceId, _sessionKey, _sessionInitVector);
             }
             else
             {
-                using (BinaryReader reader = new BinaryReader(File.Open(_deviceInfoFile, FileMode.OpenOrCreate)))
-                {
-                    _deviceId = reader.ReadInt16().ToString();
-                    _user.DeviceIdStr = _crypter.Encrypt(_deviceId, _sessionKey, _sessionInitVector);
-                    reader.Close();
-                }
+                _deviceId = await SecureStorage.Default.GetAsync("deviceId");
+                _user.DeviceIdStr = _crypter.Encrypt(_deviceId, _sessionKey, _sessionInitVector);
             }
         }
         private async Task<NewDeviceID> GetDeviceID()
@@ -124,23 +107,15 @@ namespace PrivateApp
                 {
                     if (rememberMe.IsToggled)
                     {
-                        if (new FileInfo(_loginFile).Exists) File.Delete(_loginFile);
-                        using (BinaryWriter writer = new BinaryWriter(File.Open(_loginFile, FileMode.OpenOrCreate), Encoding.UTF8, false))
-                        {
-                            writer.Write(loginField.Text);
-                            writer.Close();
-                        }
-                        if (new FileInfo(_passwordFile).Exists) File.Delete(_passwordFile);
-                        using (BinaryWriter writer = new BinaryWriter(File.Open(_passwordFile, FileMode.OpenOrCreate), Encoding.UTF8, false))
-                        {
-                            writer.Write(passwordField.Text);
-                            writer.Close();
-                        }
+                        SecureStorage.Default.Remove("login");
+                        await SecureStorage.Default.SetAsync("login", loginField.Text);
+                        SecureStorage.Default.Remove("password");
+                        await SecureStorage.Default.SetAsync("password", passwordField.Text);
                     }
                     else
                     {
-                        if (new FileInfo(_loginFile).Exists) File.Delete(_loginFile);
-                        if (new FileInfo(_passwordFile).Exists) File.Delete(_passwordFile);
+                        SecureStorage.Default.Remove("login");
+                        SecureStorage.Default.Remove("password");
                     }
                     await Navigation.PushAsync(new MainPage(_sessionId, _sessionKey, _sessionInitVector, _user, loginField.Text, _deviceId));
                 }

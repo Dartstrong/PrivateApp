@@ -1,6 +1,7 @@
-﻿using PrivateApp.Resources.Entity;
+﻿using PrivateApp.Resources.Entities;
 using PrivateApp.Resources.HelperClasses;
 using System;
+using System.Text.Json;
 namespace PrivateApp
 {
     public partial class MainPage : FlyoutPage
@@ -12,7 +13,9 @@ namespace PrivateApp
         private Crypter _crypter;
         private Converter _converter;
         private Page _settingsPage;
-        private Page _outRequests;
+        private Page _outRequestsPage;
+        private HttpClient _client;
+        private JsonSerializerOptions _serializerOptions;
         public MainPage(int sessionId, byte[] sessionKey, byte[] sessionInitVector, AuthorizationData user, string userName, string deviceId)
         {
             InitializeComponent();
@@ -25,7 +28,7 @@ namespace PrivateApp
             this.userName.Text = userName;
             this.deviceId.Text = $"device ID: {deviceId}";
             _settingsPage = new SettingsPage();
-            _outRequests = new OutcomingRequestsPage();
+            _outRequestsPage = new OutcomingRequestsPage(sessionId, sessionKey, sessionInitVector, user, userName);
         }
         protected override bool OnBackButtonPressed()
         {
@@ -45,7 +48,7 @@ namespace PrivateApp
         }
         private async void OutRequestsButtonClicked(object sender, System.EventArgs e)
         {
-            await Navigation.PushAsync(_outRequests);
+            await Navigation.PushAsync(_outRequestsPage);
         }
 
     }

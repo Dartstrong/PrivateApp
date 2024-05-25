@@ -5,7 +5,7 @@ using System.Security.Cryptography;
 using System.Security.Cryptography.X509Certificates;
 using System.Text;
 using System.Threading.Tasks;
-using PrivateApp.Resources.Entity;
+using PrivateApp.Resources.Entities;
 using PrivateApp.Resources.Models;
 namespace PrivateApp.Resources.HelperClasses
 {
@@ -60,7 +60,52 @@ namespace PrivateApp.Resources.HelperClasses
                 }
             }
         }
+        public int Decrypt(DialogueRequest dialogueRequest, byte[] key, byte[] initVector)
+        {
+            using (Aes aes = Aes.Create())
+            {
+                aes.Key = key;
+                aes.IV = initVector;
+                ICryptoTransform decryptor = aes.CreateDecryptor(aes.Key, aes.IV);
+                using (MemoryStream msDecrypt = new(StrToIntArrayToByteArray(dialogueRequest.IdStr)))
+                {
+                    using (CryptoStream csDecrypt = new(msDecrypt, decryptor, CryptoStreamMode.Read))
+                    {
+                        using (StreamReader srDecrypt = new StreamReader(csDecrypt))
+                        {
+                            return Int16.Parse(srDecrypt.ReadToEnd());
+                        }
+                    }
+                }
+            }
+        }
+        public List<DialogueRequest> Decrypt(List<DialogueRequest> dialogueRequests, byte[] key, byte[] initVector)
+        {
+            using (Aes aes = Aes.Create())
+            {
+                aes.Key = key;
+                aes.IV = initVector;
+                ICryptoTransform decryptor = aes.CreateDecryptor(aes.Key, aes.IV);
+                List<DialogueRequest> decryptedDialogues = new List<DialogueRequest>();
+                for(int i = 0; i < dialogueRequests.Count; i++)
+                {
+                   using (MemoryStream msDecrypt = new(StrToIntArrayToByteArray(dialogueRequests[i].IdStr)))
+                    {
+                        using (CryptoStream csDecrypt = new(msDecrypt, decryptor, CryptoStreamMode.Read))
+                        {
+                            using (StreamReader srDecrypt = new StreamReader(csDecrypt))
+                            {
+                                srDecrypt.Close();
+                                csDecrypt.Close();
+                                msDecrypt.Close();
 
+                            }
+                        }
+                    }
+                }
+                return decryptedDialogues;
+            }
+        }
     }
      
 }

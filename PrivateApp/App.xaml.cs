@@ -1,5 +1,5 @@
 ﻿using Microsoft.VisualBasic;
-using PrivateApp.Resources.Entity;
+using PrivateApp.Resources.Entities;
 using System.Diagnostics;
 using System.Security.Cryptography;
 using System.Text;
