@@ -40,7 +40,23 @@ namespace PrivateApp.Resources.HelperClasses
                 return decryptedBytes;
             }
         }
-
+        private string DecryptAES(string data, ICryptoTransform decryptor)
+        {
+            using (MemoryStream msDecrypt = new(StrToIntArrayToByteArray(data)))
+            {
+                using (CryptoStream csDecrypt = new(msDecrypt, decryptor, CryptoStreamMode.Read))
+                {
+                    using (StreamReader srDecrypt = new(csDecrypt))
+                    {
+                        string result = srDecrypt.ReadToEnd();
+                        srDecrypt.Close();
+                        csDecrypt.Close();
+                        msDecrypt.Close();
+                        return result;
+                    }
+                }
+            }
+        }
         public int Decrypt(NewDeviceID newDeviceID, byte[] key, byte[] initVector)
         {
             using (Aes aes = Aes.Create())
@@ -48,16 +64,7 @@ namespace PrivateApp.Resources.HelperClasses
                 aes.Key = key; 
                 aes.IV = initVector;
                 ICryptoTransform decryptor = aes.CreateDecryptor(aes.Key, aes.IV);
-                using (MemoryStream msDecrypt = new(StrToIntArrayToByteArray(newDeviceID.DeviceIdStr)))
-                {
-                    using (CryptoStream csDecrypt = new(msDecrypt, decryptor, CryptoStreamMode.Read))
-                    {
-                        using (StreamReader srDecrypt = new StreamReader(csDecrypt))
-                        {
-                            return Int16.Parse(srDecrypt.ReadToEnd());
-                        }
-                    }
-                }
+                return Int16.Parse(DecryptAES(newDeviceID.DeviceIdStr, decryptor));
             }
         }
         public int Decrypt(DialogueRequest dialogueRequest, byte[] key, byte[] initVector)
@@ -67,16 +74,7 @@ namespace PrivateApp.Resources.HelperClasses
                 aes.Key = key;
                 aes.IV = initVector;
                 ICryptoTransform decryptor = aes.CreateDecryptor(aes.Key, aes.IV);
-                using (MemoryStream msDecrypt = new(StrToIntArrayToByteArray(dialogueRequest.IdStr)))
-                {
-                    using (CryptoStream csDecrypt = new(msDecrypt, decryptor, CryptoStreamMode.Read))
-                    {
-                        using (StreamReader srDecrypt = new StreamReader(csDecrypt))
-                        {
-                            return Int16.Parse(srDecrypt.ReadToEnd());
-                        }
-                    }
-                }
+                return Int16.Parse(DecryptAES(dialogueRequest.IdStr, decryptor));
             }
         }
         public List<DialogueRequest> Decrypt(List<DialogueRequest> dialogueRequests, byte[] key, byte[] initVector)
@@ -89,19 +87,12 @@ namespace PrivateApp.Resources.HelperClasses
                 List<DialogueRequest> decryptedDialogues = new List<DialogueRequest>();
                 for(int i = 0; i < dialogueRequests.Count; i++)
                 {
-                   using (MemoryStream msDecrypt = new(StrToIntArrayToByteArray(dialogueRequests[i].IdStr)))
+                    decryptedDialogues.Add(new DialogueRequest
                     {
-                        using (CryptoStream csDecrypt = new(msDecrypt, decryptor, CryptoStreamMode.Read))
-                        {
-                            using (StreamReader srDecrypt = new StreamReader(csDecrypt))
-                            {
-                                srDecrypt.Close();
-                                csDecrypt.Close();
-                                msDecrypt.Close();
-
-                            }
-                        }
-                    }
+                        IdStr = DecryptAES( dialogueRequests[i].IdStr,decryptor),
+                        Sender = DecryptAES(dialogueRequests[i].Sender,decryptor),
+                        Receiver = DecryptAES(dialogueRequests[i].Receiver,decryptor)
+                    });
                 }
                 return decryptedDialogues;
             }

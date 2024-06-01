@@ -4,6 +4,7 @@ using PrivateApp.Resources.HelperClasses;
 using System.Text;
 using System.Security.Cryptography;
 using System.Collections.Generic;
+using Microsoft.Maui.Controls;
 namespace PrivateApp
 {
 	public partial class OutcomingRequestsPage : ContentPage
@@ -30,6 +31,7 @@ namespace PrivateApp
             _userName = userName;
             _crypter = new Crypter();
             _converter = new Converter();
+            LoadingContent();
         }
         private void CreateRestService()
         {
@@ -42,10 +44,42 @@ namespace PrivateApp
         }
         private async void LoadingContent()
         {
-            ListView usersListView = new ListView();
-            usersListView.ItemsSource = await GetMyRequests();
+            ListView listView = new ListView();
+            listView.ItemsSource = await GetMyRequests();
+            listView.ItemSelected += ItemSelected;
+            listView.ItemTemplate = new DataTemplate(() =>
+            {
+                ImageCell imageCell = new ImageCell
+                {
+                    TextColor = Color.FromHex("#7AF4BA"),
+                    DetailColor = Colors.Grey,
+                    ImageSource = ImageSource.FromFile("back_button.png"),      
+                };
+                imageCell.SetBinding(ImageCell.TextProperty, "Receiver");
+                imageCell.SetBinding(ImageCell.DetailProperty, "IdStr");
+                return imageCell;
+            });
+            mainContent.Content = new StackLayout { Children = { listView } };
         }
-
+        private async void ItemSelected(object sender, SelectedItemChangedEventArgs e)
+        {
+            DialogueRequest request = (DialogueRequest)e.SelectedItem;
+            bool result = await DisplayAlert("Подтвердить действие", $"Вы хотите отменить отправку заявки пользователю {request.Receiver}, id заявки {request.IdStr}?", "Да", "Нет");
+            if (result)
+            {
+                if (await DeleteRequestDialogue(Convert.ToInt32(request.IdStr)) == 200)
+                    LoadingContent();
+            }
+        }
+        private async Task<int> DeleteRequestDialogue(int dialogueId)
+        {
+            string json = JsonSerializer.Serialize<AuthorizationData>(_user, _serializerOptions);
+            StringContent sentContent = new StringContent(json, Encoding.UTF8, "application/json");
+            string url = DeviceInfo.Platform == DevicePlatform.Android ? $"https://10.0.2.2:5001/api/dialogues/deleteoutdialogue/{dialogueId}/{_sessionId}"
+                                                                  : $"https://localhost:5001/api/dialogues/deleteoutdialogue/{dialogueId}/{_sessionId}";
+            HttpResponseMessage response = await _client.PostAsync(url, sentContent);
+            return Convert.ToInt16(response.StatusCode);
+        }
         private async Task<IEnumerable<DialogueRequest>> GetMyRequests()
         {
             IEnumerable<DialogueRequest> dialogues = new List<DialogueRequest>();
@@ -55,18 +89,21 @@ namespace PrivateApp
                                                                   : $"https://localhost:5001/api/dialogues/getoutcomingdialogues/{_sessionId}";
             HttpResponseMessage response = await _client.PostAsync(url, sentContent);
             string content = await response.Content.ReadAsStringAsync();
-            dialogues = JsonSerializer.Deserialize<IEnumerable<DialogueRequest>>(content, _serializerOptions);
+            dialogues = _crypter.Decrypt( JsonSerializer.Deserialize<List<DialogueRequest>>(content, _serializerOptions), _sessionKey, _sessionInitVector);
             return dialogues;
         }
         private async void PlusButtonClicked(object sender, System.EventArgs e)
         {
             var receiverLogin = await DisplayPromptAsync("Отправка заявки", "Введите логин пользователя с которым хотите начать  диалог:", "OK", "Отмена");
-            int result =  await CreatingNewDialogue(receiverLogin);
-            if (result!=200)
+            if (receiverLogin != null)
             {
-                if (result == 401) { await DisplayAlert("Уведомление", "Данный пользователь не зарегестрирован", "ОK"); }
-                else { await DisplayAlert("Уведомление", "Проверьте подключение к интернету и повторите попытку", "ОK"); }
-            }  
+                int result = await CreatingNewDialogue(receiverLogin);
+                if (result != 200)
+                {
+                    if (result == 401) { await DisplayAlert("Уведомление", "Данный пользователь не зарегестрирован", "ОK"); }
+                    else { await DisplayAlert("Уведомление", "Проверьте подключение к интернету и повторите попытку", "ОK"); }
+                }
+            }
         }
         private async Task<int>CreatingNewDialogue(string receiver)
         {
