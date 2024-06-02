@@ -55,7 +55,7 @@ namespace PrivateApp
                 {
                     TextColor = Color.FromHex("#7AF4BA"),
                     DetailColor = Colors.Grey,
-                    ImageSource = ImageSource.FromFile("back_button.png"),
+                    ImageSource = ImageSource.FromFile("dialogue_icon.svg"),
                 };
                 imageCell.SetBinding(ImageCell.TextProperty, "Receiver");
                 imageCell.SetBinding(ImageCell.DetailProperty, "IdStr");
