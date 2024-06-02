@@ -68,7 +68,18 @@ namespace PrivateApp
             if (result)
             {
                 if (await DeleteRequestDialogue(Convert.ToInt32(request.IdStr)) == 200)
+                {
                     LoadingContent();
+                    SecureStorage.Default.Remove($"outRequestD/{_userName}/{request.IdStr}");
+                    SecureStorage.Default.Remove($"outRequestDP/{_userName}/{request.IdStr}");
+                    SecureStorage.Default.Remove($"outRequestDQ/{_userName}/{request.IdStr}");
+                    SecureStorage.Default.Remove($"outRequestExponent/{_userName}/{request.IdStr}");
+                    SecureStorage.Default.Remove($"outRequestInverseQ/{_userName}/{request.IdStr}");
+                    SecureStorage.Default.Remove($"outRequestModulus/{_userName}/{request.IdStr}");
+                    SecureStorage.Default.Remove($"outRequestP/{_userName}/{request.IdStr}");
+                    SecureStorage.Default.Remove($"outRequestQ/{_userName}/{request.IdStr}");
+                }
+                    
             }
         }
         private async Task<int> DeleteRequestDialogue(int dialogueId)
@@ -102,6 +113,10 @@ namespace PrivateApp
                 {
                     if (result == 401) { await DisplayAlert("Уведомление", "Данный пользователь не зарегестрирован", "ОK"); }
                     else { await DisplayAlert("Уведомление", "Проверьте подключение к интернету и повторите попытку", "ОK"); }
+                }
+                else
+                {
+                    LoadingContent();
                 }
             }
         }

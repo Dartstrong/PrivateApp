@@ -12,7 +12,7 @@
                     <Label x:Name ="userName" Padding="5" TextColor="#282828" BackgroundColor="#7AF4BA" FontSize="20" FontAttributes="Bold"/>
                     <Label x:Name ="deviceId" Padding="5" TextColor="#282828" BackgroundColor="#7AF4BA" FontSize="15"/>
                     <StackLayout Orientation="Vertical" Margin="10" Spacing="10">
-                        <Button Text="Входящие заявки" TextColor="#7AF4BA" BackgroundColor="#282828" Clicked="FlyoutButtonClicked" BorderWidth="2" BorderColor="#7AF4BA"/>
+                        <Button Text="Входящие заявки" TextColor="#7AF4BA" BackgroundColor="#282828" Clicked="InRequestsButtonClicked" BorderWidth="2" BorderColor="#7AF4BA"/>
                         <Button Text="Исходящие заявки" TextColor="#7AF4BA" BackgroundColor="#282828" Clicked="OutRequestsButtonClicked" BorderWidth="2" BorderColor="#7AF4BA"/>
                         <Button Text="Настройки" TextColor="#7AF4BA"  BackgroundColor="#282828" Clicked="SettingsButtonClicked" BorderWidth="2" BorderColor="#7AF4BA"/>
                         <Button Text="Справка" TextColor="#7AF4BA"  BackgroundColor="#282828" Clicked="FlyoutButtonClicked" BorderWidth="2" BorderColor="#7AF4BA"/>

@@ -14,6 +14,7 @@ namespace PrivateApp
         private Converter _converter;
         private Page _settingsPage;
         private Page _outRequestsPage;
+        private Page _inRequestsPage;
         private HttpClient _client;
         private JsonSerializerOptions _serializerOptions;
         public MainPage(int sessionId, byte[] sessionKey, byte[] sessionInitVector, AuthorizationData user, string userName, string deviceId)
@@ -29,6 +30,7 @@ namespace PrivateApp
             this.deviceId.Text = $"device ID: {deviceId}";
             _settingsPage = new SettingsPage();
             _outRequestsPage = new OutcomingRequestsPage(sessionId, sessionKey, sessionInitVector, user, userName);
+            _inRequestsPage = new IncomingRequestsPage(sessionId, sessionKey, sessionInitVector, user, userName);
         }
         protected override bool OnBackButtonPressed()
         {
@@ -49,6 +51,10 @@ namespace PrivateApp
         private async void OutRequestsButtonClicked(object sender, System.EventArgs e)
         {
             await Navigation.PushAsync(_outRequestsPage);
+        }
+        private async void InRequestsButtonClicked(object sender, System.EventArgs e)
+        {
+            await Navigation.PushAsync(_inRequestsPage);
         }
 
     }
