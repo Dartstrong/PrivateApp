@@ -5,6 +5,7 @@
             x:Class="PrivateApp.MainPage"
             FlyoutLayoutBehavior="Popover"
             Title="MainPage">
+    
     <FlyoutPage.Flyout>
         <ContentPage Title="Master Page" Background="#282828">
             <StackLayout>
@@ -28,7 +29,8 @@
                 <StackLayout Orientation="Horizontal">
                     <Button ImageSource="flyout_button.png" BackgroundColor="#282828" WidthRequest="50" Clicked="FlyoutButtonClicked"/>
                     <Image  HorizontalOptions="Start" Source="main_inscription.png" Aspect="AspectFit"  HeightRequest="50"/>
-                 </StackLayout>
+                </StackLayout>
+                <ScrollView x:Name="mainContent" BackgroundColor="#282828" Margin="0,30"/>
             </StackLayout>
         </ContentPage>
     </FlyoutPage.Detail>

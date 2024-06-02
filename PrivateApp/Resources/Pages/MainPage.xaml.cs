@@ -1,6 +1,7 @@
 ﻿using PrivateApp.Resources.Entities;
 using PrivateApp.Resources.HelperClasses;
 using System;
+using System.Text;
 using System.Text.Json;
 namespace PrivateApp
 {
@@ -31,6 +32,48 @@ namespace PrivateApp
             _settingsPage = new SettingsPage();
             _outRequestsPage = new OutcomingRequestsPage(sessionId, sessionKey, sessionInitVector, user, userName);
             _inRequestsPage = new IncomingRequestsPage(sessionId, sessionKey, sessionInitVector, user, userName);
+            CreateRestService();
+            LoadingContent();
+        }
+        private void CreateRestService()
+        {
+            _client = new HttpClientService().GetPlatformSpecificHttpClient();
+            _serializerOptions = new JsonSerializerOptions
+            {
+                PropertyNamingPolicy = JsonNamingPolicy.CamelCase,
+                WriteIndented = true
+            };
+        }
+        private async void LoadingContent()
+        {
+            ListView listView = new ListView();
+            listView.ItemsSource = await GetMyDialogues();
+            //listView.ItemSelected += ItemSelected;
+            listView.ItemTemplate = new DataTemplate(() =>
+            {
+                ImageCell imageCell = new ImageCell
+                {
+                    TextColor = Color.FromHex("#7AF4BA"),
+                    DetailColor = Colors.Grey,
+                    ImageSource = ImageSource.FromFile("back_button.png"),
+                };
+                imageCell.SetBinding(ImageCell.TextProperty, "Receiver");
+                imageCell.SetBinding(ImageCell.DetailProperty, "IdStr");
+                return imageCell;
+            });
+            mainContent.Content = new StackLayout { Children = { listView } };
+        }
+        private async Task<IEnumerable<StartedDialogue>> GetMyDialogues()
+        {
+            IEnumerable<StartedDialogue> dialogues = new List<StartedDialogue>();
+            string json = JsonSerializer.Serialize<AuthorizationData>(_user, _serializerOptions);
+            StringContent sentContent = new StringContent(json, Encoding.UTF8, "application/json");
+            string url = DeviceInfo.Platform == DevicePlatform.Android ? $"https://10.0.2.2:5001/api/dialogues/getstarteddialogues/{_sessionId}"
+                                                                  : $"https://localhost:5001/api/dialogues/getstarteddialogues/{_sessionId}";
+            HttpResponseMessage response = await _client.PostAsync(url, sentContent);
+            string content = await response.Content.ReadAsStringAsync();
+            dialogues = _crypter.Decrypt(JsonSerializer.Deserialize<List<StartedDialogue>>(content, _serializerOptions), _sessionKey, _sessionInitVector);
+            return dialogues;
         }
         protected override bool OnBackButtonPressed()
         {

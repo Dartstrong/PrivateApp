@@ -97,6 +97,26 @@ namespace PrivateApp.Resources.HelperClasses
                 return decryptedDialogues;
             }
         }
-    }
-     
+        public List<StartedDialogue> Decrypt(List<StartedDialogue> dialogues, byte[] key, byte[] initVector)
+        {
+            using (Aes aes = Aes.Create())
+            {
+                aes.Key = key;
+                aes.IV = initVector;
+                ICryptoTransform decryptor = aes.CreateDecryptor(aes.Key, aes.IV);
+                List<StartedDialogue> decryptedDialogues = new List<StartedDialogue>();
+                for (int i = 0; i < dialogues.Count; i++)
+                {
+                    decryptedDialogues.Add(new StartedDialogue
+                    {
+                        IdStr = DecryptAES(dialogues[i].IdStr, decryptor),
+                        Receiver = DecryptAES(dialogues[i].Receiver, decryptor),
+                        PublicKeyModulus = DecryptAES(dialogues[i].PublicKeyModulus, decryptor),
+                        PublicKeyExponent = DecryptAES(dialogues[i].PublicKeyExponent, decryptor),
+                    });
+                }
+                return decryptedDialogues;
+            }
+        }
+    }  
 }
