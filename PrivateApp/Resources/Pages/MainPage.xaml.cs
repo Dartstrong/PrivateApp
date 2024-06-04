@@ -48,7 +48,8 @@ namespace PrivateApp
         {
             ListView listView = new ListView();
             listView.ItemsSource = await GetMyDialogues();
-            //listView.ItemSelected += ItemSelected;
+            listView.SelectionMode = ListViewSelectionMode.None;
+            listView.ItemTapped += ItemTapped;
             listView.ItemTemplate = new DataTemplate(() =>
             {
                 ImageCell imageCell = new ImageCell
@@ -62,6 +63,11 @@ namespace PrivateApp
                 return imageCell;
             });
             mainContent.Content = new StackLayout { Children = { listView } };
+        }
+        private async void ItemTapped(object? sender, ItemTappedEventArgs e)
+        {
+            StartedDialogue dialogue = (StartedDialogue)e.Item;
+            await Navigation.PushAsync(new DialoguePage(_sessionId, _sessionKey, _sessionInitVector, _user, this.userName.Text, dialogue));
         }
         private async Task<IEnumerable<StartedDialogue>> GetMyDialogues()
         {

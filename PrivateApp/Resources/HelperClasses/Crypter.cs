@@ -118,5 +118,25 @@ namespace PrivateApp.Resources.HelperClasses
                 return decryptedDialogues;
             }
         }
+        public List<CustomMessage> Decrypt(List<CustomMessage> messages, byte[] key, byte[] initVector, RSAParameters rsaParameters)
+        {
+            using (Aes aes = Aes.Create())
+            {
+                aes.Key = key;
+                aes.IV = initVector;
+                ICryptoTransform decryptor = aes.CreateDecryptor(aes.Key, aes.IV);
+                List<CustomMessage> decryptedDialogues = new List<CustomMessage>();
+                for (int i = 0; i < messages.Count; i++)
+                {
+                    decryptedDialogues.Add(new CustomMessage
+                    {
+                        My = messages[i].My,
+                        Data = Encoding.UTF8.GetString(Decrypt(Encoding.UTF8.GetBytes(DecryptAES(messages[i].Data, decryptor)), rsaParameters)),
+                        ReceivedServer = messages[i].ReceivedServer
+                    });
+                }
+                return decryptedDialogues;
+            }
+        }
     }  
 }

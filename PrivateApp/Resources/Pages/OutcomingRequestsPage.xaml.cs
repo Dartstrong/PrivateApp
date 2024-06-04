@@ -46,7 +46,8 @@ namespace PrivateApp
         {
             ListView listView = new ListView();
             listView.ItemsSource = await GetMyRequests();
-            listView.ItemSelected += ItemSelected;
+            listView.SelectionMode = ListViewSelectionMode.None;
+            listView.ItemTapped += ItemTapped;
             listView.ItemTemplate = new DataTemplate(() =>
             {
                 ImageCell imageCell = new ImageCell
@@ -61,9 +62,9 @@ namespace PrivateApp
             });
             mainContent.Content = new StackLayout { Children = { listView } };
         }
-        private async void ItemSelected(object sender, SelectedItemChangedEventArgs e)
+        private async void ItemTapped(object? sender, ItemTappedEventArgs e)
         {
-            DialogueRequest request = (DialogueRequest)e.SelectedItem;
+            DialogueRequest request = (DialogueRequest)e.Item;
             bool result = await DisplayAlert("Подтвердить действие", $"Вы хотите отменить отправку заявки пользователю {request.Receiver}, id заявки {request.IdStr}?", "Да", "Нет");
             if (result)
             {
