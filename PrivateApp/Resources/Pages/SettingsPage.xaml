@@ -4,8 +4,7 @@
              x:Class="PrivateApp.SettingsPage"
              Title="Настройки"
              BackgroundColor="#282828"
-             NavigationPage.HasNavigationBar="False"
-             >
+             NavigationPage.HasNavigationBar="False" >
     <StackLayout>
         <StackLayout Orientation="Horizontal">
             <Button ImageSource="back_button.png" BackgroundColor="#282828" WidthRequest="50" Clicked="BackButtonClicked"/>

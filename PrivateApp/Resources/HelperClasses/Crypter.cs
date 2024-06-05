@@ -31,13 +31,14 @@ namespace PrivateApp.Resources.HelperClasses
                 }
             }
         }
-        public byte[] Decrypt(byte[] inputBytes, RSAParameters privateKey)
+        public string Encrypt(string inputString, RSAParameters publicKey)
         {
             using (RSA rsa = RSA.Create())
             {
-                rsa.ImportParameters(privateKey);
-                byte[] decryptedBytes = rsa.Decrypt(inputBytes, RSAEncryptionPadding.OaepSHA1);
-                return decryptedBytes;
+                rsa.ImportParameters(publicKey);
+                byte[] inputBytes = Encoding.UTF8.GetBytes(inputString);
+                byte[] encryptedBytes = rsa.Encrypt(inputBytes, RSAEncryptionPadding.OaepSHA1);
+                return ByteArrayToIntArrayToStr(encryptedBytes);
             }
         }
         private string DecryptAES(string data, ICryptoTransform decryptor)
@@ -57,6 +58,16 @@ namespace PrivateApp.Resources.HelperClasses
                 }
             }
         }
+        public byte[] Decrypt(byte[] inputBytes, RSAParameters privateKey)
+        {
+            using (RSA rsa = RSA.Create())
+            {
+                rsa.ImportParameters(privateKey);
+                byte[] decryptedBytes = rsa.Decrypt(inputBytes, RSAEncryptionPadding.OaepSHA1);
+                return decryptedBytes;
+            }
+        }
+
         public int Decrypt(NewDeviceID newDeviceID, byte[] key, byte[] initVector)
         {
             using (Aes aes = Aes.Create())

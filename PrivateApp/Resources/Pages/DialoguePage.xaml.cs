@@ -75,6 +75,27 @@ namespace PrivateApp
         {
             Navigation.RemovePage(this);
         }
+
+        private async void EntryCompleted(object sender, EventArgs e)
+        {
+            NewMessage newMessage = new()
+            {
+                LoginStr = _user.LoginStr,
+                PasswordStr = _user.PasswordStr,
+                DeviceIdStr = _user.DeviceIdStr,
+                SenderData = _crypter.Encrypt(myMessage.Text, _rsaParameters),
+                ReceiverData = _crypter.Encrypt(myMessage.Text, new RSAParameters
+                {
+                    Exponent = _converter.StrToIntArrayToByteArray(_startedDialogue.PublicKeyExponent),
+                    Modulus = _converter.StrToIntArrayToByteArray(_startedDialogue.PublicKeyModulus)
+                })
+            };
+            string json = JsonSerializer.Serialize<NewMessage>(newMessage, _serializerOptions);
+            StringContent sentContent = new StringContent(json, Encoding.UTF8, "application/json");
+            string url = DeviceInfo.Platform == DevicePlatform.Android ? $"https://10.0.2.2:5001/api/dialogues/getincomingdialogues/{_sessionId}"
+                                                                  : $"https://localhost:5001/api/dialogues/getincomingdialogues/{_sessionId}";
+            await _client.PostAsync(url, sentContent);
+        }
     }
 }
 

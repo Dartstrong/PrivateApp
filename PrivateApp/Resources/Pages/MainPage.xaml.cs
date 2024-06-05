@@ -16,6 +16,8 @@ namespace PrivateApp
         private Page _settingsPage;
         private Page _outRequestsPage;
         private Page _inRequestsPage;
+        private Page _helpPage;
+        private Page _aboutPage;  
         private HttpClient _client;
         private JsonSerializerOptions _serializerOptions;
         public MainPage(int sessionId, byte[] sessionKey, byte[] sessionInitVector, AuthorizationData user, string userName, string deviceId)
@@ -32,6 +34,8 @@ namespace PrivateApp
             _settingsPage = new SettingsPage();
             _outRequestsPage = new OutcomingRequestsPage(sessionId, sessionKey, sessionInitVector, user, userName);
             _inRequestsPage = new IncomingRequestsPage(sessionId, sessionKey, sessionInitVector, user, userName);
+            _helpPage = new HelpPage();
+            _aboutPage = new AboutPage();
             CreateRestService();
             LoadingContent();
         }
@@ -92,20 +96,33 @@ namespace PrivateApp
         private void ExitButtonClicked(object sender, System.EventArgs e)
         {            
             Navigation.RemovePage(this);  
+            IsPresented=false;
         }
         private async void SettingsButtonClicked(object sender, System.EventArgs e)
         {
             await Navigation.PushAsync(_settingsPage);
+            IsPresented = false;
         }
         private async void OutRequestsButtonClicked(object sender, System.EventArgs e)
         {
             await Navigation.PushAsync(_outRequestsPage);
+            IsPresented = false;
         }
         private async void InRequestsButtonClicked(object sender, System.EventArgs e)
         {
             await Navigation.PushAsync(_inRequestsPage);
+            IsPresented = false;
         }
-
+        private async void HelpButtonClicked(object sender, System.EventArgs e)
+        {
+            await Navigation.PushAsync(_helpPage);
+            IsPresented = false;
+        }
+        private async void AboutButtonClicked(object sender, System.EventArgs e)
+        {
+            await Navigation.PushAsync(_aboutPage);
+            IsPresented = false;
+        }
     }
 
 }

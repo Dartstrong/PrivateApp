@@ -1,11 +1,11 @@
 namespace PrivateApp
-{	
-	public partial class HelpPage : ContentPage
-	{
-		public HelpPage()
-		{
-			InitializeComponent();
-		}
+{    
+    public partial class AboutPage : ContentPage
+    {
+	    public AboutPage()
+	    {
+		    InitializeComponent();
+	    }
         private void BackButtonClicked(object sender, System.EventArgs e)
         {
             Navigation.PopAsync();

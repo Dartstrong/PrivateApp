@@ -12,7 +12,7 @@
                 <Image  HorizontalOptions="Start" VerticalOptions="Center" Source="in_requests_inscription.png" Aspect="AspectFit"  HeightRequest="50"/>
             </StackLayout>
             <ScrollView x:Name="mainContent" BackgroundColor="#282828" Margin="0,30"/>
-            <Entry x:Name="myMessage" TextColor="#7AF4BA" Placeholder="Введите сообщение" BackgroundColor="#282828" VerticalOptions="End"/>
+            <Entry x:Name="myMessage" Margin ="30"  TextColor="#7AF4BA" Placeholder="Введите сообщение" BackgroundColor="#282828" VerticalOptions="End" Completed="EntryCompleted"/>
         </VerticalStackLayout>
     </Grid>
 </ContentPage>

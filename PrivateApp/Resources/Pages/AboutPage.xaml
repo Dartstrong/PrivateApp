@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="PrivateApp.AboutPage"
+             Title="AboutPage"
+             BackgroundColor="#282828"
+             NavigationPage.HasNavigationBar="False">
+    <StackLayout >
+        <StackLayout Orientation="Horizontal">
+            <Button ImageSource="back_button.png" BackgroundColor="#282828" WidthRequest="50" Clicked="BackButtonClicked"/>
+            <Image  HorizontalOptions="Start" Source="settings_inscription.png" Aspect="AspectFit"  HeightRequest="50"/>
+        </StackLayout>
+        <ScrollView Margin="0,30" VerticalOptions="StartAndExpand" >
+            <VerticalStackLayout>
+                <Label BackgroundColor="#7AF4BA" Text="Описание" TextColor="#282828" FontSize="35" HorizontalTextAlignment="Center" FontAttributes="Bold"/>
+                <Label Padding="10" BackgroundColor="#282828" HorizontalOptions="Fill" TextColor="#7AF4BA" FontSize="15" Text="        В основе работы системы лежит ассиметричное шифрование RSA и
+                                                                    симметричное шифрование AES. При помощи ассиметричного шифрование
+                                                                    происходит шифрование симметричных ключей и их последующее
+                                                                    использование. Данный алгоритм позволяет сэкономить ресурсы
+                                                                    пользователя, так как симметричные ключи занимают меньше места, а также
+                                                                    ускоряет работу всей системы, так как алгоритм симметричного шифрования
+                                                                    работает быстрее по сравнению с алгоритмом ассиметричного шифрования."/>
+                <Label Padding="10" BackgroundColor="#282828" HorizontalOptions="Fill" TextColor="#7AF4BA" FontSize="15" Text="       Кроме того, для достижения большой криптографической
+                                                                    устойчивости используется двойное шифрование сообщений пользователей:
+                                                                    сначала данные сообщений между пользователями шифруются их
+                                                                    собственными симметричными ключами, а затем, вместе со всей служебной
+                                                                    информацией необходимой для работы сервера, шифруются повторно, но
+                                                                    уже сессионным ключом, генерируемом между пользователем и сервером
+                                                                    при идентификации пользователя в системе."/>
+                <Label BackgroundColor="#7AF4BA" Text="Описание" TextColor="#282828" FontSize="35" HorizontalTextAlignment="Center" FontAttributes="Bold"/>
+                <Label Padding="10" BackgroundColor="#282828" HorizontalOptions="Fill" TextColor="#7AF4BA" FontSize="15" Text="       Кроме того, для достижения большой криптографической
+                                                                    устойчивости используется двойное шифрование сообщений пользователей:
+                                                                    сначала данные сообщений между пользователями шифруются их
+                                                                    собственными симметричными ключами, а затем, вместе со всей служебной
+                                                                    информацией необходимой для работы сервера, шифруются повторно, но
+                                                                    уже сессионным ключом, генерируемом между пользователем и сервером
+                                                                    при идентификации пользователя в системе."/>
+            </VerticalStackLayout>
+        </ScrollView>
+    </StackLayout>
+</ContentPage>
