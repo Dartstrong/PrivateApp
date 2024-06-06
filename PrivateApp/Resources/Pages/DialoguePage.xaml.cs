@@ -5,6 +5,7 @@ using System.Text;
 using System.Security.Cryptography;
 using System.Collections.Generic;
 using Microsoft.Maui.Controls;
+using Microsoft.Maui.Controls.Handlers.Items;
 namespace PrivateApp
 {
 	public partial class DialoguePage : ContentPage
@@ -57,15 +58,32 @@ namespace PrivateApp
             _rsaParameters.Modulus= _converter.StrToIntArrayToByteArray(await SecureStorage.Default.GetAsync($"outRequestModulus/{_userName}/{_startedDialogue.IdStr}"));
             _rsaParameters.P = _converter.StrToIntArrayToByteArray(await SecureStorage.Default.GetAsync($"outRequestP/{_userName}/{_startedDialogue.IdStr}"));
             _rsaParameters.Q = _converter.StrToIntArrayToByteArray(await SecureStorage.Default.GetAsync($"outRequestQ/{_userName}/{_startedDialogue.IdStr}"));
-            //List<CustomMessage> messages = (List<CustomMessage>)await GetMyMessages();
+            List<CustomMessage> messages = (List<CustomMessage>)await GetMyMessages();
+            ListView messagesListView = new ListView();
+            messagesListView.ItemsSource = messages;
+            messagesListView.ItemTemplate = new DataTemplate(() =>
+            {
+                Label dataLabel = new Label { FontSize = 16 };
+                dataLabel.SetBinding(Label.TextProperty, "Data");
+                return new ViewCell
+                {
+                    View = new StackLayout
+                    {
+                        Padding = new Thickness(0, 5),
+                        Orientation = StackOrientation.Vertical,
+                        Children = { dataLabel }
+                    }
+                };
+            });
+            mainContent.Content = new StackLayout { Children = { messagesListView } };
         }
         private async Task<IEnumerable<CustomMessage>> GetMyMessages()
         {
             IEnumerable<CustomMessage> messages = new List<CustomMessage>();
             string json = JsonSerializer.Serialize<AuthorizationData>(_user, _serializerOptions);
             StringContent sentContent = new StringContent(json, Encoding.UTF8, "application/json");
-            string url = DeviceInfo.Platform == DevicePlatform.Android ? $"https://10.0.2.2:5001/api/dialogues/getincomingdialogues/{_sessionId}"
-                                                                  : $"https://localhost:5001/api/dialogues/getincomingdialogues/{_sessionId}";
+            string url = DeviceInfo.Platform == DevicePlatform.Android ? $"https://10.0.2.2:5001/api/dialogues/getdialoguemes/{_startedDialogue.IdStr}/{_sessionId}"
+                                                                  : $"https://localhost:5001/api/dialogues/ggetdialoguemes/{_startedDialogue.IdStr}/{_sessionId}";
             HttpResponseMessage response = await _client.PostAsync(url, sentContent);
             string content = await response.Content.ReadAsStringAsync();
             messages = _crypter.Decrypt(JsonSerializer.Deserialize<List<CustomMessage>>(content, _serializerOptions), _sessionKey, _sessionInitVector, _rsaParameters);
@@ -83,18 +101,19 @@ namespace PrivateApp
                 LoginStr = _user.LoginStr,
                 PasswordStr = _user.PasswordStr,
                 DeviceIdStr = _user.DeviceIdStr,
-                SenderData = _crypter.Encrypt(myMessage.Text, _rsaParameters),
-                ReceiverData = _crypter.Encrypt(myMessage.Text, new RSAParameters
+                SenderData = _crypter.Encrypt( _crypter.Encrypt(myMessage.Text, _rsaParameters), _sessionKey, _sessionInitVector),
+                ReceiverData = _crypter.Encrypt( _crypter.Encrypt(myMessage.Text, new RSAParameters
                 {
                     Exponent = _converter.StrToIntArrayToByteArray(_startedDialogue.PublicKeyExponent),
                     Modulus = _converter.StrToIntArrayToByteArray(_startedDialogue.PublicKeyModulus)
-                })
+                }), _sessionKey, _sessionInitVector)
             };
             string json = JsonSerializer.Serialize<NewMessage>(newMessage, _serializerOptions);
             StringContent sentContent = new StringContent(json, Encoding.UTF8, "application/json");
-            string url = DeviceInfo.Platform == DevicePlatform.Android ? $"https://10.0.2.2:5001/api/dialogues/getincomingdialogues/{_sessionId}"
-                                                                  : $"https://localhost:5001/api/dialogues/getincomingdialogues/{_sessionId}";
+            string url = DeviceInfo.Platform == DevicePlatform.Android ? $"https://10.0.2.2:5001/api/dialogues/createdialoguemes/{_startedDialogue.IdStr}/{_sessionId}"
+                                                                  : $"https://localhost:5001/api/dialogues/createdialoguemes/{_startedDialogue.IdStr}/{_sessionId}";
             await _client.PostAsync(url, sentContent);
+            myMessage.Text = "";
         }
     }
 }

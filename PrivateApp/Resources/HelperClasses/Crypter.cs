@@ -142,7 +142,7 @@ namespace PrivateApp.Resources.HelperClasses
                     decryptedDialogues.Add(new CustomMessage
                     {
                         My = messages[i].My,
-                        Data = Encoding.UTF8.GetString(Decrypt(Encoding.UTF8.GetBytes(DecryptAES(messages[i].Data, decryptor)), rsaParameters)),
+                        Data = Encoding.UTF8.GetString(Decrypt(StrToIntArrayToByteArray(DecryptAES(messages[i].Data, decryptor)), rsaParameters)),
                         ReceivedServer = messages[i].ReceivedServer
                     });
                 }
