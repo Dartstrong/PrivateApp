@@ -3,10 +3,6 @@ using System.Text.Json;
 using PrivateApp.Resources.HelperClasses;
 using System.Text;
 using System.Security.Cryptography;
-using System.Collections.Generic;
-using Microsoft.Maui.Controls;
-using Microsoft.Maui.Controls.Handlers.Items;
-using static System.Net.Mime.MediaTypeNames;
 namespace PrivateApp
 {
 	public partial class DialoguePage : ContentPage
@@ -19,8 +15,6 @@ namespace PrivateApp
         private AuthorizationData _user;
         private Crypter _crypter;
         private Converter _converter;
-        private Page _settingsPage;
-        private Page _outRequestsPage;
         private HttpClient _client;
         private StartedDialogue _startedDialogue;
         private RSAParameters _rsaParameters;
@@ -65,7 +59,7 @@ namespace PrivateApp
             {
                 Label authorLabel = new()
                 {
-                    Text = (message.My) ? $"{_userName} :" : $"{_startedDialogue.Receiver} :",
+                    Text = (message.My) ? "You :" : $"{_startedDialogue.Receiver} :",
                     FontSize = 15,
                     TextColor = Colors.Gray,
                     HorizontalTextAlignment = (message.My) ? TextAlignment.End : TextAlignment.Start

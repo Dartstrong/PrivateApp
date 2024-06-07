@@ -1,6 +1,5 @@
 ﻿using PrivateApp.Resources.Entities;
 using PrivateApp.Resources.HelperClasses;
-using System;
 using System.Text;
 using System.Text.Json;
 namespace PrivateApp
@@ -12,7 +11,6 @@ namespace PrivateApp
         private byte[] _sessionInitVector;
         private AuthorizationData _user;
         private Crypter _crypter;
-        private Converter _converter;
         private Page _settingsPage;
         private Page _outRequestsPage;
         private Page _inRequestsPage;
@@ -28,10 +26,9 @@ namespace PrivateApp
             _sessionInitVector = sessionInitVector;
             _user = user;
             _crypter = new Crypter();
-            _converter = new Converter();
             this.userName.Text = userName;
             this.deviceId.Text = $"device ID: {deviceId}";
-            _settingsPage = new SettingsPage();
+            _settingsPage = new SettingsPage(sessionId, userName, deviceId);
             _outRequestsPage = new OutcomingRequestsPage(sessionId, sessionKey, sessionInitVector, user, userName);
             _inRequestsPage = new IncomingRequestsPage(sessionId, sessionKey, sessionInitVector, user, userName);
             _helpPage = new HelpPage();

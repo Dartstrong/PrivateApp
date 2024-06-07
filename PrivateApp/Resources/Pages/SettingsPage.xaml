@@ -10,5 +10,16 @@
             <Button ImageSource="back_button.png" BackgroundColor="#282828" WidthRequest="50" Clicked="BackButtonClicked"/>
             <Image  HorizontalOptions="Start" Source="settings_inscription.png" Aspect="AspectFit"  HeightRequest="50"/>
         </StackLayout>
+        <ScrollView Margin="0,30" VerticalOptions="StartAndExpand" >
+            <VerticalStackLayout>
+                <Label BackgroundColor="#7AF4BA" Text="Об аккаунте" TextColor="#282828" FontSize="35" HorizontalTextAlignment="Center" FontAttributes="Bold"/>
+                <Label x:Name="userName" Padding="10" BackgroundColor="#282828" HorizontalOptions="Fill" TextColor="#7AF4BA" FontSize="15"/>
+                <Label x:Name="deviceId" Padding="10" BackgroundColor="#282828" HorizontalOptions="Fill" TextColor="#7AF4BA" FontSize="15"/>
+                <Label x:Name="sessionId" Padding="10" BackgroundColor="#282828" HorizontalOptions="Fill" TextColor="#7AF4BA" FontSize="15"/>
+                <Label BackgroundColor="#7AF4BA" Text="Специальные возможности" TextColor="#282828" FontSize="30" HorizontalTextAlignment="Center" FontAttributes="Bold"/>
+                <Button Text="Сбросить пароль приложения" TextColor="#7AF4BA" Margin="30,15" BackgroundColor="#282828" Clicked="ClearPasswordButtonClicked" BorderWidth="2" BorderColor="#7AF4BA"/>
+                <Button Text="Очистить хранилище ключей" TextColor="#7AF4BA" Margin="30,0" BackgroundColor="#282828" Clicked="ClearPasswordButtonClicked" BorderWidth="2" BorderColor="#7AF4BA"/>
+            </VerticalStackLayout>
+        </ScrollView>
     </StackLayout>
 </ContentPage>

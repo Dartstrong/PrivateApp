@@ -3,7 +3,6 @@ using System.Text.Json;
 using PrivateApp.Resources.HelperClasses;
 using System.Text;
 using System.Security.Cryptography;
-using System.Collections.Generic;
 namespace PrivateApp
 {
     public partial class IncomingRequestsPage : ContentPage
@@ -15,8 +14,6 @@ namespace PrivateApp
         private AuthorizationData _user;
         private Crypter _crypter;
         private Converter _converter;
-        private Page _settingsPage;
-        private Page _outRequestsPage;
         private HttpClient _client;
         private JsonSerializerOptions _serializerOptions;
         public IncomingRequestsPage(int sessionId, byte[] sessionKey, byte[] sessionInitVector, AuthorizationData user, string userName)

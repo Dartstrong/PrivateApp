@@ -1,11 +1,8 @@
-using Microsoft.Maui.Platform;
 using PrivateApp.Resources.Entities;
-using PrivateApp.Resources.Models;
 using System.Security.Cryptography;
 using System.Text;
 using System.Text.Json;
 using PrivateApp.Resources.HelperClasses;
-using System.Security.Cryptography.X509Certificates;
 namespace PrivateApp
 {
     public partial class LoginPage : ContentPage
@@ -19,9 +16,6 @@ namespace PrivateApp
         private int _sessionId;
         private byte[] _sessionKey;
         private byte[] _sessionInitVector;
-        private string _deviceInfoFile = Path.Combine(FileSystem.Current.AppDataDirectory, "DeviceInfo.dat");
-        private string _loginFile = Path.Combine(FileSystem.Current.AppDataDirectory, "LoginInfo.dat");
-        private string _passwordFile = Path.Combine(FileSystem.Current.AppDataDirectory, "PasswordInfo.dat");
         private string _deviceId;
         public LoginPage(int sessionId, byte[] sessionKey, byte[] sessionInitVector)
         {
