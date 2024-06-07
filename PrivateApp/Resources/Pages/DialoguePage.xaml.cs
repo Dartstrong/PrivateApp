@@ -6,6 +6,7 @@ using System.Security.Cryptography;
 using System.Collections.Generic;
 using Microsoft.Maui.Controls;
 using Microsoft.Maui.Controls.Handlers.Items;
+using static System.Net.Mime.MediaTypeNames;
 namespace PrivateApp
 {
 	public partial class DialoguePage : ContentPage
@@ -59,23 +60,27 @@ namespace PrivateApp
             _rsaParameters.P = _converter.StrToIntArrayToByteArray(await SecureStorage.Default.GetAsync($"outRequestP/{_userName}/{_startedDialogue.IdStr}"));
             _rsaParameters.Q = _converter.StrToIntArrayToByteArray(await SecureStorage.Default.GetAsync($"outRequestQ/{_userName}/{_startedDialogue.IdStr}"));
             List<CustomMessage> messages = (List<CustomMessage>)await GetMyMessages();
-            ListView messagesListView = new ListView();
-            messagesListView.ItemsSource = messages;
-            messagesListView.ItemTemplate = new DataTemplate(() =>
+            StackLayout mainStack = new StackLayout();
+            foreach (var message in messages)
             {
-                Label dataLabel = new Label { FontSize = 16 };
-                dataLabel.SetBinding(Label.TextProperty, "Data");
-                return new ViewCell
+                Label authorLabel = new()
                 {
-                    View = new StackLayout
-                    {
-                        Padding = new Thickness(0, 5),
-                        Orientation = StackOrientation.Vertical,
-                        Children = { dataLabel }
-                    }
+                    Text = (message.My) ? $"{_userName} :" : $"{_startedDialogue.Receiver} :",
+                    FontSize = 15,
+                    TextColor = Colors.Gray,
+                    HorizontalTextAlignment = (message.My) ? TextAlignment.End : TextAlignment.Start
                 };
-            });
-            mainContent.Content = new StackLayout { Children = { messagesListView } };
+                Label messageLabel = new()
+                {
+                    Text = message.Data,
+                    FontSize = 20,
+                    TextColor = Color.FromHex("#7AF4BA"),
+                    HorizontalTextAlignment = (message.My)? TextAlignment.End : TextAlignment.Start
+                };
+                mainStack.Children.Add(authorLabel);
+                mainStack.Children.Add(messageLabel);
+            }
+            mainContent.Content = mainStack;
         }
         private async Task<IEnumerable<CustomMessage>> GetMyMessages()
         {
@@ -114,6 +119,7 @@ namespace PrivateApp
                                                                   : $"https://localhost:5001/api/dialogues/createdialoguemes/{_startedDialogue.IdStr}/{_sessionId}";
             await _client.PostAsync(url, sentContent);
             myMessage.Text = "";
+            LoadingContent();
         }
     }
 }
