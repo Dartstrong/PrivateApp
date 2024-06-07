@@ -8,7 +8,7 @@
     <StackLayout >
         <StackLayout Orientation="Horizontal">
             <Button ImageSource="back_button.png" BackgroundColor="#282828" WidthRequest="50" Clicked="BackButtonClicked"/>
-            <Image  HorizontalOptions="Start" Source="settings_inscription.png" Aspect="AspectFit"  HeightRequest="50"/>
+            <Image  HorizontalOptions="Start" Source="about_inscription.png" Aspect="AspectFit"  HeightRequest="50"/>
         </StackLayout>
         <ScrollView Margin="0,30" VerticalOptions="StartAndExpand" >
             <VerticalStackLayout>
@@ -27,14 +27,29 @@
                                                                     информацией необходимой для работы сервера, шифруются повторно, но
                                                                     уже сессионным ключом, генерируемом между пользователем и сервером
                                                                     при идентификации пользователя в системе."/>
-                <Label BackgroundColor="#7AF4BA" Text="Описание" TextColor="#282828" FontSize="35" HorizontalTextAlignment="Center" FontAttributes="Bold"/>
-                <Label Padding="10" BackgroundColor="#282828" HorizontalOptions="Fill" TextColor="#7AF4BA" FontSize="15" Text="       Кроме того, для достижения большой криптографической
-                                                                    устойчивости используется двойное шифрование сообщений пользователей:
-                                                                    сначала данные сообщений между пользователями шифруются их
-                                                                    собственными симметричными ключами, а затем, вместе со всей служебной
-                                                                    информацией необходимой для работы сервера, шифруются повторно, но
-                                                                    уже сессионным ключом, генерируемом между пользователем и сервером
-                                                                    при идентификации пользователя в системе."/>
+                <Label BackgroundColor="#7AF4BA" Text="Шифрование RSA" TextColor="#282828" FontSize="35" HorizontalTextAlignment="Center" FontAttributes="Bold"/>
+                <Label Padding="10" BackgroundColor="#282828" HorizontalOptions="Fill" TextColor="#7AF4BA" FontSize="15" Text="       Шифрование RSA (Rivest-Shamir-Adleman) является одним из 
+                                                                    самых популярных и широко используемых методов асимметричного шифрования.
+                                                                    Он был разработан в 1977 году тремя учеными:
+                                                                    Роном Ривестом, Ади Шамиром и Леонардом Адлеманом."/>
+                <Label Padding="10" BackgroundColor="#282828" HorizontalOptions="Fill" TextColor="#7AF4BA" FontSize="15" Text="       Асимметричное шифрование означает, что для шифрования и расшифровки 
+                                                                    сообщения используются два разных ключа: открытый ключ и закрытый ключ. 
+                                                                    Открытый ключ используется для шифрования сообщения, а закрытый ключ - 
+                                                                    для его расшифровки. При этом открытый ключ может быть предоставлен любому 
+                                                                    желающему, в то время как закрытый ключ должен храниться в секрете."/>
+                <Label BackgroundColor="#7AF4BA" Text="Шифрование AES" TextColor="#282828" FontSize="35" HorizontalTextAlignment="Center" FontAttributes="Bold"/>
+                <Label Padding="10" BackgroundColor="#282828" HorizontalOptions="Fill" TextColor="#7AF4BA" FontSize="15" Text="       AES (Advanced Encryption Standard) - это симметричный алгоритм 
+                                                                    шифрования, который был разработан в качестве замены для устаревшего 
+                                                                    алгоритма DES (Data Encryption Standard). AES был выбран в результате конкурса, 
+                                                                    проведенного Национальным институтом стандартов и технологий (NIST) в 2000 году."/>
+                <Label Padding="10" BackgroundColor="#282828" HorizontalOptions="Fill" TextColor="#7AF4BA" FontSize="15" Text="       AES использует блочный шифр, который шифрует данные блоками 
+                                                                    фиксированного размера (128 бит). Существует три варианта AES, которые
+                                                                    отличаются длиной ключа: AES-128 (ключ длиной 128 бит), AES-192 
+                                                                    (ключ длиной 192 бит) и AES-256 (ключ длиной 256 бит)."/>
+                <Label Padding="10" BackgroundColor="#282828" HorizontalOptions="Fill" TextColor="#7AF4BA" FontSize="15" Text="       AES является одним из самых популярных и широко используемых 
+                                                                    алгоритмов шифрования в мире. Он используется для защиты данных
+                                                                    в различных сферах, включая финансовые операции, электронную коммерцию,
+                                                                    беспроводные сети и правительственные коммуникации."/>
             </VerticalStackLayout>
         </ScrollView>
     </StackLayout>

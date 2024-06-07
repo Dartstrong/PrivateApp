@@ -5,10 +5,44 @@
              Title="HelpPage"
              BackgroundColor="#282828"
              NavigationPage.HasNavigationBar="False">
-    <VerticalStackLayout>
+    <StackLayout>
         <StackLayout Orientation="Horizontal">
             <Button ImageSource="back_button.png" BackgroundColor="#282828" WidthRequest="50" Clicked="BackButtonClicked"/>
-            <Image  HorizontalOptions="Start" Source="settings_inscription.png" Aspect="AspectFit"  HeightRequest="50"/>
+            <Image  HorizontalOptions="Start" Source="help_inscription.png" Aspect="AspectFit"  HeightRequest="50"/>
         </StackLayout>
-    </VerticalStackLayout>
+        <ScrollView Margin="0,30" VerticalOptions="StartAndExpand" >
+            <VerticalStackLayout>
+                <Label BackgroundColor="#7AF4BA" Text="Начало диалога" TextColor="#282828" FontSize="35" HorizontalTextAlignment="Center" FontAttributes="Bold"/>
+                <Label Padding="10" BackgroundColor="#282828" HorizontalOptions="Fill" TextColor="#7AF4BA" FontSize="15" Text="Чтобы начать новый диалог вам необходимо: 
+                                                             1. Открыть боковую панель при помощи свайпа вправо.                 
+                                                             2. Перейти во вкладку Исходящие зявки.
+                                                             3. Вправом нижнем углу нажать кнопку плюс.        
+                                                             4. Ввести логин пользователя с которым вы хотите начать диалог.   
+                                                             5. После того как пользователь примет вашу заявку, новый диалог отобразиться на главной странице."/>
+                <Label BackgroundColor="#7AF4BA" Text="Отмена отправленной заявки" TextColor="#282828" FontSize="30" HorizontalTextAlignment="Center" FontAttributes="Bold"/>
+                <Label Padding="10" BackgroundColor="#282828" HorizontalOptions="Fill" TextColor="#7AF4BA" FontSize="15" Text="Чтобы отменить отправленную заявку на начало нового диалога вам необходимо: 
+                                                             1. Открыть боковую панель при помощи свайпа вправо.                 
+                                                             2. Перейти во вкладку Исходящие заявки.
+                                                             3. Нажать на диалог, который вы хотите отменить.      
+                                                             4. Подтвердить отмену во всплывшем окне.   
+                                                             5. После этого заявка будет отменена."/>
+                <Label BackgroundColor="#7AF4BA" Text="Принятие входящей заявки" TextColor="#282828" FontSize="30" HorizontalTextAlignment="Center" FontAttributes="Bold"/>
+                <Label Padding="10" BackgroundColor="#282828" HorizontalOptions="Fill" TextColor="#7AF4BA" FontSize="15" Text="Чтобы принять новый диалог вам необходимо: 
+                                                             1. Открыть боковую панель при помощи свайпа вправо.                 
+                                                             2. Перейти во вкладку Входящие заявки.
+                                                             3. Нажать на диалог, который вы хотите принять.      
+                                                             4. Подтвердить принятие во всплывшем окне.                   
+                                                             5. После этого заявка будет принята, а начавшийся диалог отобразиться на главной странице."/>
+                <Label BackgroundColor="#7AF4BA" Text="О настройках" TextColor="#282828" FontSize="35" HorizontalTextAlignment="Center" FontAttributes="Bold"/>
+                <Label Padding="10" BackgroundColor="#282828" HorizontalOptions="Fill" TextColor="#7AF4BA" FontSize="15" Text="Вы можете изменить настройки своего аккаунта и устройства, для этого: 
+                                                             1. Откройте боковую панель при помощи свайпа вправо.                 
+                                                             2. Перейти во вкладку Настройки.
+                                                             3. Нажать на интересующее вас действие и следуйте инструкциям."/>
+                <Label BackgroundColor="#7AF4BA" Text="Техническая поддержка" TextColor="#282828" FontSize="32" HorizontalTextAlignment="Center" FontAttributes="Bold"/>
+                <Label Padding="10" BackgroundColor="#282828" HorizontalOptions="Fill" TextColor="#7AF4BA" FontSize="15" Text="Вы можете связаться с технической поддержкой по возникшей у вас проблеме или ошибке одним из следующих способов:               
+                                                             1. По электронной почте:           dartstrong19xx@gmail.com.                 
+                                                             2. Использую мессенджер: для этого начните диалог с пользователем Admin."/>
+            </VerticalStackLayout>
+        </ScrollView>
+    </StackLayout>
 </ContentPage>

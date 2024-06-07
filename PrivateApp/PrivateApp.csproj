@@ -57,10 +57,13 @@
 
 	<ItemGroup>
 	  <None Remove="Platforms\Android\Resources\xml\network_security_config.xml" />
+	  <None Remove="Resources\Images\about_inscription.png" />
 	  <None Remove="Resources\Images\back_button.png" />
 	  <None Remove="Resources\Images\dialogue_icon.svg" />
+	  <None Remove="Resources\Images\dialogue_inscription.png" />
 	  <None Remove="Resources\Images\erase_button.png" />
 	  <None Remove="Resources\Images\flyout_button.png" />
+	  <None Remove="Resources\Images\help_inscription.png" />
 	  <None Remove="Resources\Images\incoming_request_icon.svg" />
 	  <None Remove="Resources\Images\in_requests_inscription.png" />
 	  <None Remove="Resources\Images\main_inscription.png" />
