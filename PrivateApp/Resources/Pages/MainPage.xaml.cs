@@ -1,7 +1,9 @@
 ﻿using PrivateApp.Resources.Entities;
 using PrivateApp.Resources.HelperClasses;
+using System;
 using System.Text;
 using System.Text.Json;
+using System.Threading;
 namespace PrivateApp
 {
     public partial class MainPage : FlyoutPage
@@ -34,7 +36,7 @@ namespace PrivateApp
             _helpPage = new HelpPage();
             _aboutPage = new AboutPage();
             CreateRestService();
-            LoadingContent();
+            new Timer(new TimerCallback(delegate { LoadingContent(); }), null, 0, 5000);
         }
         private void CreateRestService()
         {
@@ -63,7 +65,11 @@ namespace PrivateApp
                 imageCell.SetBinding(ImageCell.DetailProperty, "IdStr");
                 return imageCell;
             });
-            mainContent.Content = new StackLayout { Children = { listView } };
+            Device.BeginInvokeOnMainThread(() =>
+            {
+                mainContent.Content = new StackLayout { Children = { listView } };
+            });
+           
         }
         private async void ItemTapped(object? sender, ItemTappedEventArgs e)
         {

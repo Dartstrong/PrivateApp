@@ -32,7 +32,7 @@ namespace PrivateApp
             _crypter = new Crypter();
             _converter = new Converter();
             _rsaParameters = new RSAParameters();
-            LoadingContent();
+            new Timer(new TimerCallback(delegate { LoadingContent(); }), null, 0, 5000);
         }
         private void CreateRestService()
         {
@@ -74,7 +74,10 @@ namespace PrivateApp
                 mainStack.Children.Add(authorLabel);
                 mainStack.Children.Add(messageLabel);
             }
-            mainContent.Content = mainStack;
+            Device.BeginInvokeOnMainThread(() =>
+            {
+                mainContent.Content = mainStack;
+            });
         }
         private async Task<IEnumerable<CustomMessage>> GetMyMessages()
         {

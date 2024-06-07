@@ -27,7 +27,7 @@ namespace PrivateApp
             _userName = userName;
             _crypter = new Crypter();
             _converter = new Converter();
-            LoadingContent();
+            new Timer(new TimerCallback(delegate { LoadingContent(); }), null, 0, 5000);
         }
         private void CreateRestService()
         {
@@ -56,7 +56,11 @@ namespace PrivateApp
                 imageCell.SetBinding(ImageCell.DetailProperty, "IdStr");
                 return imageCell;
             });
-            mainContent.Content = new StackLayout { Children = { listView } };
+            Device.BeginInvokeOnMainThread(() =>
+            {
+                mainContent.Content = new StackLayout { Children = { listView } };
+            });
+            
         }
         private async void ItemTapped(object? sender, ItemTappedEventArgs e)
         {
