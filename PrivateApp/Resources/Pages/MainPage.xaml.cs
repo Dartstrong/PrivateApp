@@ -30,7 +30,7 @@ namespace PrivateApp
             _crypter = new Crypter();
             this.userName.Text = userName;
             this.deviceId.Text = $"device ID: {deviceId}";
-            _settingsPage = new SettingsPage(sessionId, userName, deviceId);
+            _settingsPage = new SettingsPage(sessionId, sessionKey, sessionInitVector, user, userName, deviceId);
             _outRequestsPage = new OutcomingRequestsPage(sessionId, sessionKey, sessionInitVector, user, userName);
             _inRequestsPage = new IncomingRequestsPage(sessionId, sessionKey, sessionInitVector, user, userName);
             _helpPage = new HelpPage();
@@ -68,8 +68,7 @@ namespace PrivateApp
             Device.BeginInvokeOnMainThread(() =>
             {
                 mainContent.Content = new StackLayout { Children = { listView } };
-            });
-           
+            });         
         }
         private async void ItemTapped(object? sender, ItemTappedEventArgs e)
         {

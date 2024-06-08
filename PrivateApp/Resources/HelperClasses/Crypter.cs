@@ -149,5 +149,24 @@ namespace PrivateApp.Resources.HelperClasses
                 return decryptedDialogues;
             }
         }
+        public List<LoginEntry> Decrypt(List<LoginEntry> loginEntries, byte[] key, byte[] initVector)
+        {
+            using (Aes aes = Aes.Create())
+            {
+                aes.Key = key;
+                aes.IV = initVector;
+                ICryptoTransform decryptor = aes.CreateDecryptor(aes.Key, aes.IV);
+                List<LoginEntry> decrypteLoginEntries = new List<LoginEntry>();
+                for (int i = 0; i < loginEntries.Count; i++)
+                {
+                    decrypteLoginEntries.Add(new LoginEntry
+                    {
+                        DeviceIdStr = DecryptAES(loginEntries[i].DeviceIdStr, decryptor),
+                        Date = loginEntries[i].Date
+                    });
+                }
+                return decrypteLoginEntries;
+            }
+        }
     }  
 }

@@ -16,9 +16,11 @@
                 <Label x:Name="userName" Padding="10" BackgroundColor="#282828" HorizontalOptions="Fill" TextColor="#7AF4BA" FontSize="15"/>
                 <Label x:Name="deviceId" Padding="10" BackgroundColor="#282828" HorizontalOptions="Fill" TextColor="#7AF4BA" FontSize="15"/>
                 <Label x:Name="sessionId" Padding="10" BackgroundColor="#282828" HorizontalOptions="Fill" TextColor="#7AF4BA" FontSize="15"/>
+                <Label Padding="10" BackgroundColor="#282828" Text="История входов в аккаунт:" TextColor="#7AF4BA" FontSize="20" FontAttributes="Bold"/>
+                <ScrollView x:Name="loginHistory" BackgroundColor="#282828" Padding="10"/>
                 <Label BackgroundColor="#7AF4BA" Text="Специальные возможности" TextColor="#282828" FontSize="30" HorizontalTextAlignment="Center" FontAttributes="Bold"/>
                 <Button Text="Сбросить пароль приложения" TextColor="#7AF4BA" Margin="30,15" BackgroundColor="#282828" Clicked="ClearPasswordButtonClicked" BorderWidth="2" BorderColor="#7AF4BA"/>
-                <Button Text="Очистить хранилище ключей" TextColor="#7AF4BA" Margin="30,0" BackgroundColor="#282828" Clicked="ClearPasswordButtonClicked" BorderWidth="2" BorderColor="#7AF4BA"/>
+                <Button Text="Очистить хранилище ключей" TextColor="#7AF4BA" Margin="30,0" BackgroundColor="#282828" Clicked="RemoveKeysButtonClicked" BorderWidth="2" BorderColor="#7AF4BA"/>
             </VerticalStackLayout>
         </ScrollView>
     </StackLayout>

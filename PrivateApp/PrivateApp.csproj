@@ -66,6 +66,7 @@
 	  <None Remove="Resources\Images\help_inscription.png" />
 	  <None Remove="Resources\Images\incoming_request_icon.svg" />
 	  <None Remove="Resources\Images\in_requests_inscription.png" />
+	  <None Remove="Resources\Images\login_history_icon.svg" />
 	  <None Remove="Resources\Images\main_inscription.png" />
 	  <None Remove="Resources\Images\outcoming_request_icon.svg" />
 	  <None Remove="Resources\Images\out_requests_inscription.png" />
