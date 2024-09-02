@@ -1,10 +1,4 @@
-﻿using Microsoft.VisualBasic;
-using PrivateApp.Resources.Entities;
-using System.Diagnostics;
-using System.Security.Cryptography;
-using System.Text;
-using System.Text.Json;
-namespace PrivateApp
+﻿namespace PrivateApp
 {
     public partial class App : Application
     {
